@@ -7,6 +7,11 @@ const Habit = ({ name, isActive, activeDay, month, year }) => {
   const activeStyle = isActive ? "bg-blue-500 text-white" : ""
   const activeDayStyle = "border-4 border-black border-rounded"
 
+  const formatActiveDate = () => {
+    const date = new Date(year, month, activeDay)
+    return date.toISOString().split("T")[0]
+  }
+
   return (
     <div className={`flex flex-col items-center`}>
       <div className={`p-2 flex flex-col items-center ${activeStyle}`}>
