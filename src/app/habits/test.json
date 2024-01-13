@@ -1,0 +1,117 @@
+[
+  {
+    "type": "Bit",
+    "name": "rested",
+    "stats": {
+      "2024-01-08": true,
+      "2024-01-01": true,
+      "2024-01-02": false
+    },
+    "goal": true,
+    "auto": false
+  },
+  {
+    "type": "Bit",
+    "name": "meditate",
+    "stats": {
+      "2024-01-08": true,
+      "2024-01-07": true,
+      "2024-01-02": true,
+      "2024-01-04": true,
+      "2024-01-05": true,
+      "2024-01-06": true,
+      "2024-01-03": true,
+      "2024-01-01": true
+    },
+    "goal": true,
+    "auto": false
+  },
+  {
+    "type": "Bit",
+    "name": "mobility",
+    "stats": {
+      "2024-01-01": true,
+      "2024-01-08": true,
+      "2024-01-05": true,
+      "2024-01-02": true,
+      "2024-01-03": true,
+      "2024-01-07": true,
+      "2024-01-04": true,
+      "2024-01-06": true
+    },
+    "goal": true,
+    "auto": false
+  },
+  {
+    "type": "Bit",
+    "name": "exercise",
+    "stats": {
+      "2024-01-04": false,
+      "2024-01-01": true,
+      "2024-01-05": true,
+      "2024-01-08": false,
+      "2024-01-06": true,
+      "2024-01-02": true,
+      "2024-01-07": false,
+      "2024-01-03": true
+    },
+    "goal": true,
+    "auto": false
+  },
+  {
+    "type": "Bit",
+    "name": "study",
+    "stats": {
+      "2024-01-02": false,
+      "2024-01-03": true,
+      "2024-01-07": false,
+      "2024-01-06": false,
+      "2024-01-08": true,
+      "2024-01-05": true,
+      "2024-01-04": true,
+      "2024-01-01": false
+    },
+    "goal": true,
+    "auto": false
+  },
+  {
+    "type": "Bit",
+    "name": "work",
+    "stats": {
+      "2024-01-07": false,
+      "2024-01-06": false,
+      "2024-01-08": false,
+      "2024-01-02": true,
+      "2024-01-04": true,
+      "2024-01-01": false,
+      "2024-01-03": true,
+      "2024-01-05": false
+    },
+    "goal": true,
+    "auto": false
+  },
+  {
+    "type": "Bit",
+    "name": "socialize",
+    "stats": {
+      "2024-01-01": true,
+      "2024-01-04": true,
+      "2024-01-02": true,
+      "2024-01-05": true,
+      "2024-01-06": true,
+      "2024-01-07": true,
+      "2024-01-03": true
+    },
+    "goal": true,
+    "auto": false
+  },
+  {
+    "type": "Bit",
+    "name": "nutrition",
+    "stats": {
+      "2024-01-01": true
+    },
+    "goal": true,
+    "auto": false
+  }
+]

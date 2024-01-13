@@ -1,25 +1,50 @@
 "use client"
-import React, { useState } from "react"
+
+import { getMonthName } from "@/utils"
 import Habit from "./Habit"
+import { useEffect, useState } from "react"
+
+const habits = [
+  { name: "rested", isActive: true },
+  { name: "exercise", isActive: false },
+  { name: "study", isActive: false },
+  { name: "read", isActive: false },
+  { name: "code", isActive: false },
+]
 
 const Habits = () => {
-  const habits = ["rested", "exercise", "study", "read", "code"]
-  const [activeDayIndex, setActiveDayIndex] = useState(null)
+  const [activeHabit, setActiveHabit] = useState(null)
+  const [activeDay, setActiveDay] = useState(null)
+  const [month, setMonth] = useState(null)
+  const [year, setYear] = useState(null)
 
-  const handleDayClick = (dayIndex) => {
-    setActiveDayIndex(dayIndex)
-  }
+  useEffect(() => {
+    const today = new Date()
+    const day = today.getDate()
+    const month = today.getMonth()
+    const year = today.getFullYear()
+    setActiveDay(day)
+    setMonth(month)
+    setYear(year)
+  }, [])
 
   return (
-    <div className="bg-black text-white p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {habits.map((habit, index) => (
-        <Habit
-          key={habit}
-          name={habit}
-          activeDayIndex={activeDayIndex}
-          onDayClick={handleDayClick}
-        />
-      ))}
+    <div>
+      <div className="pt-4 text-center">
+        {getMonthName(month)}, {year}
+      </div>
+      <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {habits.map((habit, index) => (
+          <Habit
+            key={index}
+            name={habit.name}
+            isActive={habit.isActive}
+            activeDay={activeDay}
+            month={month}
+            year={year}
+          />
+        ))}
+      </div>
     </div>
   )
 }
