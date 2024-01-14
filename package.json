@@ -9,11 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-table": "^8.11.6",
     "classnames": "^2.5.1",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
