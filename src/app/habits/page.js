@@ -1,14 +1,13 @@
 "use client"
-
-import { getMonthName, getDaysInMonth } from "@/utils"
+import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
 import Habit from "./Habit"
 import { useEffect, useState } from "react"
-
 import initialHabits from "./test.json"
 
 const Habits = () => {
   const [habits, setHabits] = useState(initialHabits)
   const [activeHabitIndex, setActiveHabitIndex] = useState(0)
+  const [today, setToday] = useState(formatDate(new Date()))
   const [activeDay, setActiveDay] = useState(null)
   const [month, setMonth] = useState(null)
   const [year, setYear] = useState(null)
@@ -44,7 +43,6 @@ const Habits = () => {
       }
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault()
-        console.log(333)
       }
       if (event.key === "ArrowRight") {
         event.preventDefault()
@@ -86,6 +84,8 @@ const Habits = () => {
             key={index}
             name={habit.name}
             isActive={index === activeHabitIndex}
+            data={habit.stats}
+            today={today}
             activeDay={activeDay}
             month={month}
             year={year}
