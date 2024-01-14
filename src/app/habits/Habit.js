@@ -3,13 +3,19 @@ import React from "react"
 import classNames from "classnames"
 import { getDaysInMonth } from "@/utils"
 
-const Habit = ({ name, isActive, activeDay, month, year }) => {
+const Habit = ({ name, isActive, activeDay, month, year, onDateClick }) => {
   const days = Array.from(
     { length: getDaysInMonth(month, year) },
     (_, i) => i + 1,
   )
   const activeStyle = isActive ? "bg-blue-500 text-white" : ""
   const activeDayStyle = "border-4 border-black border-rounded"
+
+  const handleDateClick = (day) => {
+    onDateClick(day, name)
+  }
+
+  // useEffect(() => {})
 
   const formatActiveDate = () => {
     const date = new Date(year, month, activeDay)
@@ -24,6 +30,7 @@ const Habit = ({ name, isActive, activeDay, month, year }) => {
           {days.map((day, index) => (
             <div
               key={day}
+              onClick={() => handleDateClick(day)}
               className={classNames(
                 "w-6 h-6 rounded-sm flex justify-center items-center text-xs",
                 { [activeDayStyle]: isActive && day === activeDay },

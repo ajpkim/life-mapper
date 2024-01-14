@@ -4,13 +4,7 @@ import { getMonthName, getDaysInMonth } from "@/utils"
 import Habit from "./Habit"
 import { useEffect, useState } from "react"
 
-const initialHabits = [
-  { name: "rested" },
-  { name: "exercise" },
-  { name: "study" },
-  { name: "read" },
-  { name: "code" },
-]
+import initialHabits from "./test.json"
 
 const Habits = () => {
   const [habits, setHabits] = useState(initialHabits)
@@ -33,10 +27,24 @@ const Habits = () => {
   }, [])
 
   useEffect(() => {
+    setHabits(habits)
+  }, [])
+
+  useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "Tab") {
+      if (event.key === "Tab" && !event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) => (prev + 1) % habits.length)
+      }
+      if (event.key === "Tab" && event.shiftKey) {
+        event.preventDefault()
+        setActiveHabitIndex((prev) =>
+          prev === 0 ? habits.length - 1 : prev - 1,
+        )
+      }
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault()
+        console.log(333)
       }
       if (event.key === "ArrowRight") {
         event.preventDefault()
@@ -61,6 +69,12 @@ const Habits = () => {
     }
   }, [daysInMonth])
 
+  const handleDateClick = (day, name) => {
+    const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
+    setActiveDay(day)
+    setActiveHabitIndex(newActiveHabitIndex)
+  }
+
   return (
     <div>
       <div className="pt-4 text-center">
@@ -75,6 +89,7 @@ const Habits = () => {
             activeDay={activeDay}
             month={month}
             year={year}
+            onDateClick={handleDateClick}
           />
         ))}
       </div>
