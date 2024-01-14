@@ -1,9 +1,13 @@
 "use client"
 import React from "react"
 import classNames from "classnames"
+import { getDaysInMonth } from "@/utils"
 
 const Habit = ({ name, isActive, activeDay, month, year }) => {
-  const days = Array.from({ length: 30 }, (_, i) => i + 1)
+  const days = Array.from(
+    { length: getDaysInMonth(month, year) },
+    (_, i) => i + 1,
+  )
   const activeStyle = isActive ? "bg-blue-500 text-white" : ""
   const activeDayStyle = "border-4 border-black border-rounded"
 
