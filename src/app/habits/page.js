@@ -1,11 +1,11 @@
 "use client"
-import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
-import Habit from "./Habit"
 import { useEffect, useState } from "react"
-import initialHabits from "./test.json"
+import axios from "axios"
+import Habit from "./Habit"
+import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
 
 const Habits = () => {
-  const [habits, setHabits] = useState(initialHabits)
+  const [habits, setHabits] = useState(null)
   const [activeHabitIndex, setActiveHabitIndex] = useState(0)
   const [today, setToday] = useState(formatDate(new Date()))
   const [activeDay, setActiveDay] = useState(null)
@@ -26,7 +26,16 @@ const Habits = () => {
   }, [])
 
   useEffect(() => {
-    setHabits(habits)
+    const fetchHabitsData = async () => {
+      try {
+        const response = await axios.get("/api/habits")
+        console.log(response.data)
+        setHabits(response.data)
+      } catch (error) {
+        console.error("Error fetching habit:", error)
+      }
+    }
+    fetchHabitsData()
   }, [])
 
   useEffect(() => {
@@ -80,6 +89,10 @@ const Habits = () => {
     setActiveHabitIndex(newActiveHabitIndex)
   }
 
+  if (habits === null) {
+    return <div>Loading...</div> // You can replace this with a spinner or a suitable loading component
+  }
+
   return (
     <div>
       <div className="pt-4 text-center">
@@ -91,7 +104,7 @@ const Habits = () => {
             key={index}
             name={habit.name}
             isActive={index === activeHabitIndex}
-            data={habit.stats}
+            stats={habit.stats}
             today={today}
             activeDay={activeDay}
             month={month}

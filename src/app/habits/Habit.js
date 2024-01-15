@@ -6,7 +6,7 @@ import { formatDate, getDaysInMonth } from "@/utils"
 const Habit = ({
   name,
   isActive,
-  data,
+  stats,
   today,
   activeDay,
   month,
@@ -24,7 +24,7 @@ const Habit = ({
 
   const getDateClassClassNames = (day) => {
     const date = formatDate(new Date(year, month, day))
-    const isDone = data[date]
+    const isDone = stats[date]
     const isFuture = date > today
 
     return classNames(
