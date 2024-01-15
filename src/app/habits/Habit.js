@@ -22,9 +22,14 @@ const Habit = ({
     onDateClick(day, name)
   }
 
+  const getDateStat = (date) => {
+    const stat = stats.find((habit_stat) => habit_stat.date === date)
+    return stat ? stat.stat : 0
+  }
+
   const getDateClassClassNames = (day) => {
     const date = formatDate(new Date(year, month, day))
-    const isDone = stats[date]
+    const isDone = getDateStat(date)
     const isFuture = date > today
 
     return classNames(

@@ -81,7 +81,7 @@ const Habits = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [daysInMonth])
+  }, [daysInMonth, habits])
 
   const handleDateClick = (day, name) => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
