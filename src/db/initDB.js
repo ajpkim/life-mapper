@@ -18,19 +18,33 @@ name TEXT NOT NULL,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`
 
-db.run(createHabitsTable, (err) => {
+const createHabitStatsTable = `
+CREATE TABLE IF NOT EXISTS habit_stats (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+habit_id INTEGER NOT NULL,
+date DATE NOT NULL,
+status BOOLEAN NOT NULL,
+FOREIGN KEY (habit_id) REFERENCES habits(id)
+)`
+
+function createTable(sql, tableName) {
+  db.run(sql, (err) => {
+    if (err) {
+      console.error(`Error creating ${tableName} table:`, err.message)
+    } else {
+      console.log(`${tableName} created successfully.`)
+    }
+  })
+}
+
+createTable(createHabitsTable, "Habit")
+createTable(createHabitStatsTable, "Habit Stats")
+
+db.close((err) => {
   if (err) {
     console.error(err.message)
-  } else {
-    console.log("Habit table created successfully.")
   }
-
-  db.close((err) => {
-    if (err) {
-      console.error(err.message)
-    }
-    console.log("Closed the database connection.")
-  })
+  console.log("Closed the database connection.")
 })
 
 //////////////////////////////////////////////////////////////////////
