@@ -1,6 +1,5 @@
-import { open } from "sqlite"
-import sqlite3 from "sqlite3"
-
+const sqlite3 = require("sqlite3")
+const { open } = require("sqlite")
 const path = require("path")
 const dbPath =
   process.env.NEXT_PUBLIC_DATABASE_PATH || path.join(__dirname, "habits.db")

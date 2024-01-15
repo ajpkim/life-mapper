@@ -1,15 +1,6 @@
 const sqlite3 = require("sqlite3").verbose()
 const path = require("path")
-const dbPath =
-  process.env.NEXT_PUBLIC_DATABASE_PATH || path.join(__dirname, "habits.db")
-
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error(err.message)
-    return
-  }
-  console.log("Connected to the SQLite database.")
-})
+const { openDB, closeDB } = require("./db")
 
 const createHabitsTable = `
 CREATE TABLE IF NOT EXISTS habits (
@@ -27,25 +18,24 @@ status BOOLEAN NOT NULL,
 FOREIGN KEY (habit_id) REFERENCES habits(id)
 )`
 
-function createTable(sql, tableName) {
+function createTable(db, sql, tableName) {
   db.run(sql, (err) => {
     if (err) {
       console.error(`Error creating ${tableName} table:`, err.message)
     } else {
-      console.log(`${tableName} created successfully.`)
+      console.log(`${tableName} table created successfully.`)
     }
   })
 }
 
-createTable(createHabitsTable, "Habit")
-createTable(createHabitStatsTable, "Habit Stats")
+async function initDBSchema() {
+  const db = await openDB()
+  createTable(db, createHabitsTable, "Habit")
+  createTable(db, createHabitStatsTable, "Habit Stats")
+  await closeDB(db)
+}
 
-db.close((err) => {
-  if (err) {
-    console.error(err.message)
-  }
-  console.log("Closed the database connection.")
-})
+initDBSchema()
 
 //////////////////////////////////////////////////////////////////////
 // Dynamic initialization func
