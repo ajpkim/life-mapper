@@ -1,5 +1,6 @@
 "use client"
-import React from "react"
+import { useEffect, useRef } from "react"
+import axios from "axios"
 import classNames from "classnames"
 import { formatDate, getDaysInMonth } from "@/utils"
 
@@ -13,6 +14,15 @@ const Habit = ({
   year,
   onDateClick,
 }) => {
+  const activeDayRef = useRef(null)
+
+  useEffect(() => {
+    // Only set focus if this habit is active and the ref is set
+    if (isActive && activeDayRef.current) {
+      activeDayRef.current.focus()
+    }
+  }, [activeDay, isActive])
+
   const days = Array.from(
     { length: getDaysInMonth(month, year) },
     (_, i) => i + 1,
@@ -31,14 +41,34 @@ const Habit = ({
     const date = formatDate(new Date(year, month, day))
     const isDone = getDateStat(date)
     const isFuture = date > today
+    const isFocused = isActive && day === activeDay
 
     return classNames(
       "w-6 h-6 rounded-sm flex justify-center items-center text-xs",
       isDone && "text-green-400",
       !isDone && !isFuture && "text-red-400",
       isFuture && "text-gray-400",
-      isActive && day === activeDay && "border-2 border-black",
+      isFocused && "border-2 border-black outline-none",
     )
+  }
+
+  const toggleStat = (day) => {
+    const date = formatDate(new Date(year, month, day))
+    // TODO
+    const payload = {
+      date,
+    }
+    try {
+      const response = axios.post(`/api/habits/${name}`, payload)
+    } catch (error) {
+      console.error("Error toggling habit status:", error)
+    }
+  }
+
+  const handleKeyDown = (event, day) => {
+    if (event.key === "Enter" || event.key === " ") {
+      toggleStat(day)
+    }
   }
 
   return (
@@ -54,8 +84,11 @@ const Habit = ({
           {days.map((day, index) => (
             <div
               key={day}
+              tabIndex={0}
               onClick={() => handleDateClick(day)}
+              onKeyDown={(e) => handleKeyDown(e, day)}
               className={getDateClassClassNames(day)}
+              ref={day === activeDay ? activeDayRef : null}
             >
               {day}
             </div>

@@ -27,7 +27,6 @@ export async function getHabitsData() {
       habit.id,
     )
     habit.stats = stats
-    console.log(habit)
   }
   await db.close()
   return habits

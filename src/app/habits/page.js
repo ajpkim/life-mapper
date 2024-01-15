@@ -29,7 +29,6 @@ const Habits = () => {
     const fetchHabitsData = async () => {
       try {
         const response = await axios.get("/api/habits")
-        console.log(response.data)
         setHabits(response.data)
       } catch (error) {
         console.error("Error fetching habit:", error)
