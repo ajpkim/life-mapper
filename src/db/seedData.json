@@ -1,0 +1,75 @@
+{
+  "habits": [
+    {
+      "id": 0,
+      "name": "sleep",
+      "created_at": "2024-01-01"
+    },
+    {
+      "id": 1,
+      "name": "meditate",
+      "created_at": "2024-01-01"
+    },
+    {
+      "id": 2,
+      "name": "exercise",
+      "created_at": "2024-01-01"
+    }
+  ],
+  "habit_stats": [
+    {
+      "id": 0,
+      "habit_id": 0,
+      "date": "2024-01-01",
+      "status": 0
+    },
+    {
+      "id": 1,
+      "habit_id": 0,
+      "date": "2024-01-02",
+      "status": 1
+    },
+    {
+      "id": 2,
+      "habit_id": 0,
+      "date": "2024-01-03",
+      "status": 1
+    },
+        {
+      "id": 3,
+      "habit_id": 1,
+      "date": "2024-01-01",
+      "status": 1
+    },
+    {
+      "id": 4,
+      "habit_id": 1,
+      "date": "2024-01-02",
+      "status": 0
+    },
+    {
+      "id": 5,
+      "habit_id": 1,
+      "date": "2024-01-03",
+      "status": 1
+    },
+        {
+      "id": 6,
+      "habit_id": 2,
+      "date": "2024-01-01",
+      "status": 1
+    },
+    {
+      "id": 7,
+      "habit_id": 2,
+      "date": "2024-01-02",
+      "status": 1
+    },
+    {
+      "id": 8,
+      "habit_id": 2,
+      "date": "2024-01-03",
+      "status": 0
+    }
+  ]
+}

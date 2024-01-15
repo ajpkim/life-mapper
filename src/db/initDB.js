@@ -36,37 +36,3 @@ async function initDBSchema() {
 }
 
 initDBSchema()
-
-//////////////////////////////////////////////////////////////////////
-// Dynamic initialization func
-//////////////////////////////////////////////////////////////////////
-// async function initDB() {
-//   const db = new sqlite3.Datebase(dbPath, (err) => {
-//     if (err) {
-//       console.log(err.message)
-//       throw err
-//     }
-//     console.log("Connected to SQLite DB.")
-//   })
-
-//   const createHabitsTable = `
-// CREATE TABLE IF NOT EXISTS habits (
-// id INTEGER PRIMARY KEY AUTOINCREMENT
-// name TEXT NOT NULL
-// created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// )`
-
-//   return new Promise((resolve, reject) => {
-//     db.run(createHabitsTable, (err) => {
-//       db.close()
-//       if (err) {
-//         console.error("Error creating habits table", err.message)
-//         reject(err)
-//       }
-//       console.log("Habits table created successfully")
-//       resolve()
-//     })
-//   })
-// }
-
-// module.exports = initDB
