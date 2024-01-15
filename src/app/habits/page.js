@@ -31,6 +31,13 @@ const Habits = () => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
+      if (event.key === "1") {
+        event.preventDefault()
+        fetch("api/init")
+          .then((response) => response.json())
+          .then((data) => console.log(data))
+          .catch((error) => console.error("Error:", error))
+      }
       if (event.key === "Tab" && !event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) => (prev + 1) % habits.length)
