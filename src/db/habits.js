@@ -11,9 +11,24 @@ async function openDb() {
   })
 }
 
-export async function getAllHabits() {
+export async function getHabits() {
   const db = await openDb()
   const habits = await db.all("SELECT * FROM habits")
+  await db.close()
+  return habits
+}
+
+export async function getHabitsData() {
+  const db = await openDb()
+  const habits = await db.all("SELECT * FROM habits")
+  for (let habit of habits) {
+    const stats = await db.all(
+      "SELECT * FROM habit_stats WHERE habit_id = ?",
+      habit.id,
+    )
+    habit.stats = stats
+    console.log(habit)
+  }
   await db.close()
   return habits
 }

@@ -1,8 +1,8 @@
-import { getAllHabits } from "@/db/habits"
+import { getHabitsData } from "@/db/habits"
 
 export async function GET(request) {
   try {
-    const habits = await getAllHabits()
+    const habits = await getHabitsData()
     return new Response(JSON.stringify(habits), {
       status: 200,
       headers: { "Content-Type": "application/json" },
