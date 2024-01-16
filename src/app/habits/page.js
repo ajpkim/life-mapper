@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import Habit from "./Habit"
 import NewHabitModal from "./NewHabitModal"
+import ConfigModal from "./ConfigModal"
 import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
 
 const Habits = () => {
@@ -15,6 +16,7 @@ const Habits = () => {
   const [daysInMonth, setDaysInMonth] = useState(0)
   const [isAddingHabit, setIsAddingHabit] = useState(false)
   const [isReorderMode, setIsReorderMode] = useState(false)
+  const [isConfigMode, setIsConfigMode] = useState(false)
 
   useEffect(() => {
     const today = new Date()
@@ -79,9 +81,15 @@ const Habits = () => {
         event.preventDefault()
         setIsReorderMode(!isReorderMode)
       }
+      if (event.key === "c") {
+        event.preventDefault()
+        setIsConfigMode(!isConfigMode)
+      }
       if (event.key === "Escape") {
         event.preventDefault()
         setIsAddingHabit(false)
+        setIsConfigMode(false)
+        setIsReorderMode(false)
       }
     }
     document.addEventListener("keydown", handleKeyDown)
@@ -94,6 +102,10 @@ const Habits = () => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
     setActiveDay(day)
     setActiveHabitIndex(newActiveHabitIndex)
+  }
+
+  const handleConfigModalClose = () => {
+    setIsConfigMode(false)
   }
 
   const handleNewHabitModalClose = () => {
@@ -138,6 +150,11 @@ const Habits = () => {
   return (
     <div>
       <div>
+        <ConfigModal
+          isOpen={isConfigMode}
+          onSubmit={handleNewHabitSubmit}
+          onClose={handleConfigModalClose}
+        />
         <NewHabitModal
           isOpen={isAddingHabit}
           onSubmit={handleNewHabitSubmit}
