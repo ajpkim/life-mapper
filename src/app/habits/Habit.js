@@ -13,6 +13,7 @@ const Habit = ({
   month,
   year,
   onDateClick,
+  onUpdateStats,
 }) => {
   const activeDayRef = useRef(null)
 
@@ -62,6 +63,10 @@ const Habit = ({
     }
     try {
       const response = await axios.post(`/api/habits/${name}`, payload)
+
+      if (onUpdateStats) {
+        onUpdateStats(name, payload.stat, date)
+      }
     } catch (error) {
       console.error("Error toggling habit status:", error)
     }

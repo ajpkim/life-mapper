@@ -88,8 +88,27 @@ const Habits = () => {
     setActiveHabitIndex(newActiveHabitIndex)
   }
 
+  const updateHabitStats = (name, updatedStat, date) => {
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) => {
+        if (habit.name === name) {
+          // Upserting the new habit stat value
+          const statIndex = habit.stats.findIndex((stat) => stat.date === date)
+          const updatedStats =
+            statIndex >= 0
+              ? habit.stats.map((stat, index) =>
+                  index === statIndex ? { ...stat, stat: updatedStat } : stat,
+                )
+              : [...habit.stats, { date, stat: updatedStat }]
+          return { ...habit, stats: updatedStats }
+        }
+        return habit
+      }),
+    )
+  }
+
   if (habits === null) {
-    return <div>Loading...</div> // You can replace this with a spinner or a suitable loading component
+    return <div>Loading...</div>
   }
 
   return (
@@ -109,6 +128,7 @@ const Habits = () => {
             month={month}
             year={year}
             onDateClick={handleDateClick}
+            onUpdateStats={updateHabitStats}
           />
         ))}
       </div>

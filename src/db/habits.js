@@ -35,10 +35,11 @@ export async function getHabitsData() {
 export async function createOrUpdateHabitStat(name, date, stat) {
   const db = await openDb()
   const habit = await db.get("SELECT id FROM habits WHERE name = ?", name)
+
   if (!habit) {
     throw new Error("Habit not found:", name)
   }
-  // errno: 25
+
   const currentStat = await db.get(
     "SELECT id FROM habit_stats WHERE habit_id = ? AND date = ?",
     habit.id,
