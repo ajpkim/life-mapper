@@ -5,7 +5,7 @@ const { openDB, closeDB } = require("./db")
 const createHabitsTable = `
 CREATE TABLE IF NOT EXISTS habits (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT NOT NULL,
+name TEXT NOT NULL UNIQUE,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`
 
