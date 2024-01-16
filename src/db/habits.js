@@ -28,7 +28,9 @@ export async function createHabit(name) {
 
 export async function getHabitsData() {
   const db = await openDb()
-  const habits = await db.all("SELECT * FROM habits")
+  const habits = await db.all(
+    "SELECT * FROM habits WHERE active = TRUE ORDER BY display_order",
+  )
   for (let habit of habits) {
     const stats = await db.all(
       "SELECT * FROM habit_stats WHERE habit_id = ?",

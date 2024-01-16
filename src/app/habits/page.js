@@ -14,6 +14,7 @@ const Habits = () => {
   const [year, setYear] = useState(null)
   const [daysInMonth, setDaysInMonth] = useState(0)
   const [isAddingHabit, setIsAddingHabit] = useState(false)
+  const [isReorderMode, setIsReorderMode] = useState(false)
 
   useEffect(() => {
     const today = new Date()
@@ -41,13 +42,6 @@ const Habits = () => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "1") {
-        event.preventDefault()
-        fetch("api/init")
-          .then((response) => response.json())
-          .then((data) => console.log(data))
-          .catch((error) => console.error("Error:", error))
-      }
       if (event.key === "Tab" && !event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) => (prev + 1) % habits.length)
@@ -81,6 +75,10 @@ const Habits = () => {
         event.preventDefault()
         setIsAddingHabit(true)
       }
+      if (event.key === "r") {
+        event.preventDefault()
+        setIsReorderMode(!isReorderMode)
+      }
       if (event.key === "Escape") {
         event.preventDefault()
         setIsAddingHabit(false)
@@ -90,7 +88,7 @@ const Habits = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [daysInMonth, habits])
+  }, [daysInMonth, habits, isReorderMode])
 
   const handleDateClick = (day, name) => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
@@ -109,6 +107,7 @@ const Habits = () => {
       setHabits([...habits, response.data])
       setIsAddingHabit(false)
     } catch (error) {
+      // TODO: Provide useful modal telling user that they tried to create a duplicate habit
       console.error("Error adding new habit:", error)
     }
   }
