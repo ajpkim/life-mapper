@@ -31,3 +31,35 @@ export async function getHabitsData() {
   await db.close()
   return habits
 }
+
+export async function createOrUpdateHabitStat(name, date, stat) {
+  const db = await openDb()
+  const habit = await db.get("SELECT id FROM habits WHERE name = ?", name)
+  if (!habit) {
+    throw new Error("Habit not found:", name)
+  }
+  // errno: 25
+  const currentStat = await db.get(
+    "SELECT id FROM habit_stats WHERE habit_id = ? AND date = ?",
+    habit.id,
+    date,
+  )
+
+  if (currentStat) {
+    await db.run(
+      "UPDATE habit_stats SET stat = ? WHERE id = ?",
+      stat,
+      currentStat.id,
+    )
+  } else {
+    await db.run(
+      "INSERT INTO habit_stats (habit_id, date, stat) VALUES (?, ?, ?)",
+      habit.id,
+      date,
+      stat,
+    )
+  }
+
+  await db.close()
+  return 1
+}

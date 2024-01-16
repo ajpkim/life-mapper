@@ -52,14 +52,16 @@ const Habit = ({
     )
   }
 
-  const toggleStat = (day) => {
+  const toggleStat = async (day) => {
     const date = formatDate(new Date(year, month, day))
-    // TODO
+    const stat = !getDateStat(date)
     const payload = {
+      name,
       date,
+      stat,
     }
     try {
-      const response = axios.post(`/api/habits/${name}`, payload)
+      const response = await axios.post(`/api/habits/${name}`, payload)
     } catch (error) {
       console.error("Error toggling habit status:", error)
     }
