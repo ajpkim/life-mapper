@@ -81,6 +81,10 @@ const Habits = () => {
         event.preventDefault()
         setIsAddingHabit(true)
       }
+      if (event.key === "Escape") {
+        event.preventDefault()
+        setIsAddingHabit(false)
+      }
     }
     document.addEventListener("keydown", handleKeyDown)
     return () => {
@@ -92,6 +96,10 @@ const Habits = () => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
     setActiveDay(day)
     setActiveHabitIndex(newActiveHabitIndex)
+  }
+
+  const handleNewHabitModalClose = () => {
+    setIsAddingHabit(false)
   }
 
   const handleNewHabitSubmit = async (name) => {
@@ -131,7 +139,11 @@ const Habits = () => {
   return (
     <div>
       <div>
-        <NewHabitModal isOpen={isAddingHabit} onSubmit={handleNewHabitSubmit} />
+        <NewHabitModal
+          isOpen={isAddingHabit}
+          onSubmit={handleNewHabitSubmit}
+          onClose={handleNewHabitModalClose}
+        />
       </div>
       <div className="pt-4 text-center">
         {getMonthName(month)}, {year}
