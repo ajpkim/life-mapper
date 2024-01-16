@@ -19,11 +19,9 @@ export async function getHabits() {
 }
 
 export async function createHabit(name) {
-  console.log("ADDING HAB TO DB")
   const db = await openDb()
   const res = await db.run("INSERT INTO habits (name) VALUEs (?)", [name])
   const habitId = res.lastID
-
   await db.close()
   return { id: habitId, name: name, stats: [] }
 }

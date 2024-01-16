@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import Habit from "./Habit"
+import NewHabitModal from "./NewHabitModal"
 import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
 
 const Habits = () => {
@@ -79,7 +80,6 @@ const Habits = () => {
       if (event.key === "n") {
         event.preventDefault()
         setIsAddingHabit(true)
-        handleNewHabitSubmit("ZZZ")
       }
     }
     document.addEventListener("keydown", handleKeyDown)
@@ -130,7 +130,9 @@ const Habits = () => {
 
   return (
     <div>
-      <div></div>
+      <div>
+        <NewHabitModal isOpen={isAddingHabit} onSubmit={handleNewHabitSubmit} />
+      </div>
       <div className="pt-4 text-center">
         {getMonthName(month)}, {year}
       </div>
