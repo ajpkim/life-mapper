@@ -12,6 +12,7 @@ const Habits = () => {
   const [month, setMonth] = useState(null)
   const [year, setYear] = useState(null)
   const [daysInMonth, setDaysInMonth] = useState(0)
+  const [isAddingHabit, setIsAddingHabit] = useState(false)
 
   useEffect(() => {
     const today = new Date()
@@ -75,6 +76,11 @@ const Habits = () => {
         event.preventDefault()
         setActiveDay((prev) => Math.min(prev + 7, daysInMonth))
       }
+      if (event.key === "n") {
+        event.preventDefault()
+        setIsAddingHabit(true)
+        handleNewHabitSubmit("ZZZ")
+      }
     }
     document.addEventListener("keydown", handleKeyDown)
     return () => {
@@ -86,6 +92,17 @@ const Habits = () => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
     setActiveDay(day)
     setActiveHabitIndex(newActiveHabitIndex)
+  }
+
+  const handleNewHabitSubmit = async (name) => {
+    try {
+      const response = await axios.post("/api/habits", { name })
+      console.log(response.data)
+      setHabits([...habits, response.data])
+      setIsAddingHabit(false)
+    } catch (error) {
+      console.error("Error adding new habit:", error)
+    }
   }
 
   const updateHabitStats = (name, updatedStat, date) => {
@@ -113,6 +130,7 @@ const Habits = () => {
 
   return (
     <div>
+      <div></div>
       <div className="pt-4 text-center">
         {getMonthName(month)}, {year}
       </div>
