@@ -71,16 +71,16 @@ const Habits = () => {
         setActiveDay((prev) => Math.min(prev + 7, daysInMonth))
       }
       if (event.key === "n") {
-        event.preventDefault()
-        setIsAddingHabit(true)
+        if (!isAddingHabit && !isConfigMode) {
+          event.preventDefault()
+          setIsAddingHabit(true)
+        }
       }
-      // if (event.key === "r") {
-      //   event.preventDefault()
-      //   setIsReorderMode(!isReorderMode)
-      // }
       if (event.key === "c") {
-        event.preventDefault()
-        setIsConfigMode(!isConfigMode)
+        if (!isAddingHabit) {
+          event.preventDefault()
+          setIsConfigMode(!isConfigMode)
+        }
       }
       if (event.key === "Escape") {
         event.preventDefault()
@@ -93,7 +93,7 @@ const Habits = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [daysInMonth, habits, isReorderMode, isConfigMode])
+  }, [daysInMonth, habits, isReorderMode, isConfigMode, isAddingHabit])
 
   const handleDateClick = (day, name) => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
