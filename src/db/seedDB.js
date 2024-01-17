@@ -11,13 +11,13 @@ async function seedDB() {
 
     console.log("Seeding habits table.")
     for (const habit of seedData.habits) {
-      const { id, name, active, display_order, created_at } = habit
-      const insertHabitSql = `INSERT INTO habits (id, name, active, display_order, created_at) VALUES (?, ?, ?, ?, ?)`
+      const { id, name, active, display_num, created_at } = habit
+      const insertHabitSql = `INSERT INTO habits (id, name, active, display_num, created_at) VALUES (?, ?, ?, ?, ?)`
       await db.run(insertHabitSql, [
         id,
         name,
         active,
-        display_order,
+        display_num,
         created_at,
       ])
     }

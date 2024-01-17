@@ -1,8 +1,22 @@
+import axios from "axios"
 import { useEffect, useState, useRef } from "react"
 
-const HabitConfigModal = ({ isOpen, onSubmit, onClose }) => {
-  const [name, setName] = useState("")
+const HabitConfigModal = ({ isOpen, onSubmit, onClose, habits }) => {
   const modalRef = useRef(null)
+
+  // useEffect(() => {
+  //   const fetchHabits = async () => {
+  //     try {
+  //       const response = await axios.get("/api/habits")
+  //       setHabits(habits)
+  //     } catch (error) {
+  //       console.error("Error fetching habits for config modal:", error.message)
+  //     }
+  //   }
+  //   fetchHabits()
+  // }, [])
+
+  console.log(habits)
 
   const handleOutsideClick = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {

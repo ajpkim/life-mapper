@@ -4,28 +4,28 @@
       "id": 0,
       "name": "sleep",
       "active": true,
-      "display_order": 1,
+      "display_num": 1,
       "created_at": "2024-01-01"
     },
     {
       "id": 1,
       "name": "meditate",
       "active": true,
-      "display_order": 3,
+      "display_num": 3,
       "created_at": "2024-01-01"
     },
     {
       "id": 2,
       "name": "exercise",
       "active": true,
-      "display_order": 2,
+      "display_num": 2,
       "created_at": "2024-01-01"
     },
     {
       "id": 3,
       "name": "hidden",
       "active": false,
-      "display_order": 4,
+      "display_num": 4,
       "created_at": "2024-01-01"
     }
   ],

@@ -20,16 +20,31 @@ export async function getHabits() {
 
 export async function createHabit(name) {
   const db = await openDb()
-  const res = await db.run("INSERT INTO habits (name) VALUEs (?)", [name])
+  // We need to create the new habit with the largest display_num for all habits
+  const maxRes = await db.get(
+    "SELECT MAX(display_num) as maxDisplayNum FROM habits",
+  )
+  const maxDisplayNum = maxRes.maxDisplayNum ? maxRes.maxDisplayNum : 0
+  const res = await db.run(
+    "INSERT INTO habits (name, active, display_num) VALUES (?, ?, ?)",
+    [name, true, maxDisplayNum + 1],
+  )
   const habitId = res.lastID
   await db.close()
-  return { id: habitId, name: name, stats: [] }
+
+  return {
+    id: habitId,
+    name: name,
+    active: true,
+    display_num: maxDisplayNum + 1,
+    stats: [],
+  }
 }
 
 export async function getHabitsData() {
   const db = await openDb()
   const habits = await db.all(
-    "SELECT * FROM habits WHERE active = TRUE ORDER BY display_order",
+    "SELECT * FROM habits WHERE active = TRUE ORDER BY display_num",
   )
   for (let habit of habits) {
     const stats = await db.all(

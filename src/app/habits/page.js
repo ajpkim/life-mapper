@@ -115,7 +115,6 @@ const Habits = () => {
   const handleNewHabitSubmit = async (name) => {
     try {
       const response = await axios.post("/api/habits", { name })
-      console.log(response.data)
       setHabits([...habits, response.data])
       setIsAddingHabit(false)
     } catch (error) {
@@ -154,6 +153,7 @@ const Habits = () => {
           isOpen={isConfigMode}
           onSubmit={handleNewHabitSubmit}
           onClose={handleConfigModalClose}
+          habits={habits}
         />
         <NewHabitModal
           isOpen={isAddingHabit}
