@@ -74,10 +74,10 @@ const Habits = () => {
         event.preventDefault()
         setIsAddingHabit(true)
       }
-      if (event.key === "r") {
-        event.preventDefault()
-        setIsReorderMode(!isReorderMode)
-      }
+      // if (event.key === "r") {
+      //   event.preventDefault()
+      //   setIsReorderMode(!isReorderMode)
+      // }
       if (event.key === "c") {
         event.preventDefault()
         setIsConfigMode(!isConfigMode)
