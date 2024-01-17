@@ -129,13 +129,19 @@ const Habits = () => {
         active,
         display_num,
       })
-      setHabits(
-        habits.map((habit) => {
-          if (habit.id === id) {
-            return { ...response.data, stats: habit.stats }
-          }
-          return habit
-        }),
+      setHabits((prevHabits) =>
+        prevHabits
+          .map((habit) => {
+            if (habit.id === id) {
+              return { ...response.data, stats: habit.stats }
+            }
+            return habit
+          })
+          .sort((a, b) => {
+            if (a.display_num === null) return 1
+            if (b.display_num === null) return -1
+            return a.display_num - b.display_num
+          }),
       )
     } catch (error) {
       console.error(`Error updating habit ${id}:`, error)

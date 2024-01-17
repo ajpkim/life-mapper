@@ -49,7 +49,11 @@ export async function createHabit(name) {
 
 export async function getHabitsData() {
   const db = await openDb()
-  const habits = await db.all("SELECT * FROM habits ORDER BY display_num")
+  const habits = await db.all(`
+SELECT * FROM habits
+ORDER BY CASE WHEN display_num IS NULL THEN 1 ELSE 0 END,
+display_num
+`)
   for (let habit of habits) {
     const stats = await db.all(
       "SELECT * FROM habit_stats WHERE habit_id = ?",

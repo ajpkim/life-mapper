@@ -18,7 +18,6 @@ const Habit = ({
   const activeDayRef = useRef(null)
 
   useEffect(() => {
-    // Only set focus if this habit is active and the ref is set
     if (isActive && activeDayRef.current) {
       activeDayRef.current.focus()
     }
