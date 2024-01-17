@@ -54,9 +54,6 @@ const Habits = () => {
           prev === 0 ? habits.length - 1 : prev - 1,
         )
       }
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault()
-      }
       if (event.key === "ArrowRight") {
         event.preventDefault()
         setActiveDay((prev) => (prev % daysInMonth) + 1)
@@ -96,7 +93,7 @@ const Habits = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [daysInMonth, habits, isReorderMode])
+  }, [daysInMonth, habits, isReorderMode, isConfigMode])
 
   const handleDateClick = (day, name) => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
@@ -120,6 +117,28 @@ const Habits = () => {
     } catch (error) {
       // TODO: Provide useful modal telling user that they tried to create a duplicate habit
       console.error("Error adding new habit:", error)
+    }
+  }
+
+  const handleUpdateHabit = async (updatedHabit) => {
+    try {
+      const { id, name, active, display_num } = updatedHabit
+      const response = await axios.patch(`/api/habits/${id}`, {
+        id,
+        name,
+        active,
+        display_num,
+      })
+      setHabits(
+        habits.map((habit) => {
+          if (habit.id === id) {
+            return { ...response.data, stats: habit.stats }
+          }
+          return habit
+        }),
+      )
+    } catch (error) {
+      console.error(`Error updating habit ${id}:`, error)
     }
   }
 
@@ -151,8 +170,8 @@ const Habits = () => {
       <div>
         <ConfigModal
           isOpen={isConfigMode}
-          onSubmit={handleNewHabitSubmit}
           onClose={handleConfigModalClose}
+          onUpdateHabit={handleUpdateHabit}
           habits={habits}
         />
         <NewHabitModal
@@ -165,20 +184,22 @@ const Habits = () => {
         {getMonthName(month)}, {year}
       </div>
       <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {habits.map((habit, index) => (
-          <Habit
-            key={index}
-            name={habit.name}
-            isActive={index === activeHabitIndex}
-            stats={habit.stats}
-            today={today}
-            activeDay={activeDay}
-            month={month}
-            year={year}
-            onDateClick={handleDateClick}
-            onUpdateStats={updateHabitStats}
-          />
-        ))}
+        {habits
+          .filter((habit) => habit.active)
+          .map((habit, index) => (
+            <Habit
+              key={index}
+              name={habit.name}
+              isActive={index === activeHabitIndex}
+              stats={habit.stats}
+              today={today}
+              activeDay={activeDay}
+              month={month}
+              year={year}
+              onDateClick={handleDateClick}
+              onUpdateStats={updateHabitStats}
+            />
+          ))}
       </div>
     </div>
   )

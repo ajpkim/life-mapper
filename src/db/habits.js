@@ -18,16 +18,22 @@ export async function getHabits() {
   return habits
 }
 
-export async function createHabit(name) {
+async function getNextDisplayNum() {
   const db = await openDb()
-  // We need to create the new habit with the largest display_num for all habits
-  const maxRes = await db.get(
+  const res = await db.get(
     "SELECT MAX(display_num) as maxDisplayNum FROM habits",
   )
-  const maxDisplayNum = maxRes.maxDisplayNum ? maxRes.maxDisplayNum : 0
+  const nextDisplayNum = res.maxDisplayNum ? res.maxDisplayNum + 1 : 0
+  await db.close()
+  return nextDisplayNum
+}
+
+export async function createHabit(name) {
+  const db = await openDb()
+  const nextDisplayNum = await getNextDisplayNum()
   const res = await db.run(
     "INSERT INTO habits (name, active, display_num) VALUES (?, ?, ?)",
-    [name, true, maxDisplayNum + 1],
+    [name, true, nextDisplayNum],
   )
   const habitId = res.lastID
   await db.close()
@@ -36,16 +42,14 @@ export async function createHabit(name) {
     id: habitId,
     name: name,
     active: true,
-    display_num: maxDisplayNum + 1,
+    display_num: nextDisplayNum,
     stats: [],
   }
 }
 
 export async function getHabitsData() {
   const db = await openDb()
-  const habits = await db.all(
-    "SELECT * FROM habits WHERE active = TRUE ORDER BY display_num",
-  )
+  const habits = await db.all("SELECT * FROM habits ORDER BY display_num")
   for (let habit of habits) {
     const stats = await db.all(
       "SELECT * FROM habit_stats WHERE habit_id = ?",
@@ -55,6 +59,16 @@ export async function getHabitsData() {
   }
   await db.close()
   return habits
+}
+
+export async function updateHabit({ id, name, active, display_num }) {
+  const db = await openDb()
+  const res = await db.run(
+    "UPDATE habits SET name = ?, active = ?, display_num = ? WHERE id = ?",
+    [name, active, display_num, id],
+  )
+  await db.close()
+  return { id, name, active, display_num }
 }
 
 export async function createOrUpdateHabitStat(name, date, stat) {
