@@ -6,6 +6,7 @@ import { formatDate, getDaysInMonth } from "@/utils"
 
 const Habit = ({
   name,
+  createdAt,
   isActive,
   stats,
   today,
@@ -39,15 +40,17 @@ const Habit = ({
 
   const getDateClassClassNames = (day) => {
     const date = formatDate(new Date(year, month, day))
+    const habitCreationDate = formatDate(new Date(createdAt))
     const isDone = getDateStat(date)
     const isFuture = date > today
+    const isBeforeHabitCreated = date < habitCreationDate
     const isFocused = isActive && day === activeDay
 
     return classNames(
       "w-6 h-6 rounded-sm flex justify-center items-center text-xs",
       isDone && "text-green-400",
-      !isDone && !isFuture && "text-red-400",
-      isFuture && "text-gray-400",
+      !isDone && !isFuture && !isBeforeHabitCreated && "text-red-400",
+      (isFuture || isBeforeHabitCreated) && "text-gray-400",
       isFocused && "border-2 border-black outline-none",
     )
   }

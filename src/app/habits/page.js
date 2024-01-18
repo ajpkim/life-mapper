@@ -122,7 +122,7 @@ const Habits = () => {
 
   const handleUpdateHabit = async (updatedHabit) => {
     try {
-      const { id, name, active, display_num } = updatedHabit
+      const { id, name, createdAt, active, display_num } = updatedHabit
       const response = await axios.patch(`/api/habits/${id}`, {
         id,
         name,
@@ -196,6 +196,7 @@ const Habits = () => {
             <Habit
               key={index}
               name={habit.name}
+              createdAt={habit.created_at}
               isActive={index === activeHabitIndex}
               stats={habit.stats}
               today={today}
