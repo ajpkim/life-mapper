@@ -31,18 +31,17 @@ async function getNextDisplayNum() {
 export async function createHabit(name) {
   const db = await openDb()
   const nextDisplayNum = await getNextDisplayNum()
-  const res = await db.run(
+  const insertRes = await db.run(
     "INSERT INTO habits (name, active, display_num) VALUES (?, ?, ?)",
     [name, true, nextDisplayNum],
   )
-  const habitId = res.lastID
+  const habitId = insertRes.lastID
+  const habitRes = await db.get("SELECT * FROM habits WHERE id = ?", [habitId])
+
   await db.close()
 
   return {
-    id: habitId,
-    name: name,
-    active: true,
-    display_num: nextDisplayNum,
+    ...habitRes,
     stats: [],
   }
 }
@@ -65,14 +64,20 @@ display_num
   return habits
 }
 
-export async function updateHabit({ id, name, active, display_num }) {
+export async function updateHabit({
+  id,
+  name,
+  active,
+  display_num,
+  created_at,
+}) {
   const db = await openDb()
   const res = await db.run(
-    "UPDATE habits SET name = ?, active = ?, display_num = ? WHERE id = ?",
-    [name, active, display_num, id],
+    "UPDATE habits SET name = ?, active = ?, display_num = ?, created_at = ? WHERE id = ?",
+    [name, active, display_num, created_at, id],
   )
   await db.close()
-  return { id, name, active, display_num }
+  return { id, name, active, display_num, created_at }
 }
 
 export async function createOrUpdateHabitStat(name, date, stat) {

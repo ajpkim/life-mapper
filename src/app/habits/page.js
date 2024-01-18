@@ -120,14 +120,20 @@ const Habits = () => {
     }
   }
 
-  const handleUpdateHabit = async (updatedHabit) => {
+  const handleUpdateHabit = async ({
+    id,
+    name,
+    active,
+    display_num,
+    created_at,
+  }) => {
     try {
-      const { id, name, createdAt, active, display_num } = updatedHabit
       const response = await axios.patch(`/api/habits/${id}`, {
         id,
         name,
         active,
         display_num,
+        created_at,
       })
       setHabits((prevHabits) =>
         prevHabits

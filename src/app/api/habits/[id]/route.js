@@ -23,8 +23,14 @@ export async function POST(request) {
 
 export async function PATCH(request) {
   try {
-    const { id, name, active, display_num } = await request.json()
-    const updatedHabit = await updateHabit({ id, name, active, display_num })
+    const { id, name, active, display_num, created_at } = await request.json()
+    const updatedHabit = await updateHabit({
+      id,
+      name,
+      active,
+      display_num,
+      created_at,
+    })
     return new Response(JSON.stringify(updatedHabit), {
       status: 200,
       headers: { "Content-Type": "application/json" },

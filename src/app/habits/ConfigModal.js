@@ -10,7 +10,7 @@ const ConfigModal = ({ isOpen, onClose, onUpdateHabit, habits }) => {
     setNumActiveHabits(
       habits.reduce((acc, habit) => (habit.active ? acc + 1 : acc), 0),
     )
-  }, [])
+  }, [habits])
 
   const handleOutsideClick = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {

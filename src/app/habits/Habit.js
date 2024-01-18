@@ -22,7 +22,7 @@ const Habit = ({
     if (isActive && activeDayRef.current) {
       activeDayRef.current.focus()
     }
-  }, [activeDay, isActive])
+  }, [activeDay, isActive, createdAt])
 
   const days = Array.from(
     { length: getDaysInMonth(month, year) },
@@ -38,7 +38,7 @@ const Habit = ({
     return stat ? stat.stat : 0
   }
 
-  const getDateClassClassNames = (day) => {
+  const getDateClassNames = (day) => {
     const date = formatDate(new Date(year, month, day))
     const habitCreationDate = formatDate(new Date(createdAt))
     const isDone = getDateStat(date)
@@ -96,7 +96,7 @@ const Habit = ({
               tabIndex={0}
               onClick={() => handleDateClick(day)}
               onKeyDown={(e) => handleKeyDown(e, day)}
-              className={getDateClassClassNames(day)}
+              className={getDateClassNames(day)}
               ref={day === activeDay ? activeDayRef : null}
             >
               {day}
