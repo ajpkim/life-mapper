@@ -32,6 +32,13 @@ const ControlsModal = ({ isOpen, onClose }) => {
               <td className={tableDataClassNames}>Show habit config modal</td>
             </tr>
             <tr>
+              <td className={tableDataClassNames}>SPACE | ENTER</td>
+              <td className={tableDataClassNames}>
+                Toggle habit completion status
+              </td>
+            </tr>
+
+            <tr>
               <td className={tableDataClassNames}>n</td>
               <td className={tableDataClassNames}>Create new habit</td>
             </tr>
