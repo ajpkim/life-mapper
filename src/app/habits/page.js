@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import Habit from "./Habit"
 import NewHabitModal from "./NewHabitModal"
+import ControlsModal from "./ControlsModal"
 import ConfigModal from "./ConfigModal"
 import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
 
@@ -15,9 +16,11 @@ const Habits = () => {
   const [month, setMonth] = useState(null)
   const [year, setYear] = useState(null)
   const [daysInMonth, setDaysInMonth] = useState(0)
-  const [isAddingHabit, setIsAddingHabit] = useState(false)
+  const [isAddHabitMode, setIsAddHabitMode] = useState(false)
   const [isReorderMode, setIsReorderMode] = useState(false)
   const [isConfigMode, setIsConfigMode] = useState(false)
+  const [isControlsMode, setIsControlsMode] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const today = new Date()
@@ -45,10 +48,14 @@ const Habits = () => {
   }, [])
 
   useEffect(() => {
-    if (habits !== null)
+    if (habits !== null) {
       setNumActiveHabits(
         habits.reduce((acc, habit) => (habit.active ? acc + 1 : acc), 0),
       )
+      if (habits.length === 0) {
+        setIsAddHabitMode(true)
+      }
+    }
   }, [habits])
 
   useEffect(() => {
@@ -101,9 +108,16 @@ const Habits = () => {
         event.preventDefault()
         setActiveDay((prev) => Math.min(prev + 7, daysInMonth))
       }
+      // Show controls
+      if (event.key === "?") {
+        if (!isAddHabitMode && !isConfigMode) {
+          setIsControlsMode(true)
+          setIsModalOpen(true)
+        }
+      }
       // Export data
       if (event.key === "e") {
-        if (!isAddingHabit && !isConfigMode) {
+        if (!isAddHabitMode && !isConfigMode) {
           event.preventDefault()
           const json = JSON.stringify(habits, null, 2)
           const blob = new Blob([json], { type: "application/json" })
@@ -119,21 +133,21 @@ const Habits = () => {
       }
       // Add new habit
       if (event.key === "n") {
-        if (!isAddingHabit && !isConfigMode) {
+        if (!isAddHabitMode && !isConfigMode) {
           event.preventDefault()
-          setIsAddingHabit(true)
+          setIsAddHabitMode(true)
         }
       }
       // Habit config mode
       if (event.key === "c") {
-        if (!isAddingHabit) {
+        if (!isAddHabitMode) {
           event.preventDefault()
           setIsConfigMode(!isConfigMode)
         }
       }
       // Habit config mode
       if (event.key === "t") {
-        if (!isAddingHabit && !isConfigMode) {
+        if (!isAddHabitMode && !isConfigMode) {
           event.preventDefault()
           setActiveDay(today.getDate())
         }
@@ -141,9 +155,7 @@ const Habits = () => {
       // Return to main habits page
       if (event.key === "Escape") {
         event.preventDefault()
-        setIsAddingHabit(false)
-        setIsConfigMode(false)
-        setIsReorderMode(false)
+        handleModalClose()
       }
     }
     document.addEventListener("keydown", handleKeyDown)
@@ -155,7 +167,7 @@ const Habits = () => {
     habits,
     isReorderMode,
     isConfigMode,
-    isAddingHabit,
+    isAddHabitMode,
     numActiveHabits,
   ])
 
@@ -165,19 +177,17 @@ const Habits = () => {
     setActiveHabitIndex(newActiveHabitIndex)
   }
 
-  const handleConfigModalClose = () => {
+  const handleModalClose = () => {
+    setIsControlsMode(false)
     setIsConfigMode(false)
-  }
-
-  const handleNewHabitModalClose = () => {
-    setIsAddingHabit(false)
+    setIsAddHabitMode(false)
   }
 
   const handleNewHabitSubmit = async (name) => {
     try {
       const response = await axios.post("/api/habits", { name })
       setHabits([...habits, response.data])
-      setIsAddingHabit(false)
+      setIsAddHabitMode(false)
     } catch (error) {
       // TODO: Provide useful modal telling user that they tried to create a duplicate habit
       console.error("Error adding new habit:", error)
@@ -237,29 +247,34 @@ const Habits = () => {
     )
   }
 
-  if (habits === null) {
-    return <div>Loading...</div>
-  }
+  if (habits === null) return <div>Loading...</div>
 
   return (
     <div className="text-gray-200">
       <div>
+        <ControlsModal isOpen={isControlsMode} onClose={handleModalClose} />
         <ConfigModal
           isOpen={isConfigMode}
-          onClose={handleConfigModalClose}
+          onClose={handleModalClose}
           onUpdateHabit={handleUpdateHabit}
           habits={habits}
           numActiveHabits={numActiveHabits}
         />
         <NewHabitModal
-          isOpen={isAddingHabit}
+          isOpen={isAddHabitMode}
           onSubmit={handleNewHabitSubmit}
-          onClose={handleNewHabitModalClose}
+          onClose={handleModalClose}
         />
       </div>
-      <div className="pt-4 text-center">
-        {`${today.toLocaleString("en-us", { weekday: "long" })} ${activeDay} ${getMonthName(month)}, ${year}`}
+      <div className="relative pt-4">
+        <div className="text-center">
+          {`${today.toLocaleString("en-us", { weekday: "long" })} ${activeDay} ${getMonthName(month)}, ${year}`}
+        </div>
+        <div className="absolute pt-6 pr-32 top-0 right-0 font-light italic">
+          Press ? to see controls
+        </div>
       </div>
+
       <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {habits
           .filter((habit) => habit.active)
