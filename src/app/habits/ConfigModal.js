@@ -10,13 +10,6 @@ const ConfigModal = ({
   numActiveHabits,
 }) => {
   const modalRef = useRef(null)
-  // const [numActiveHabits, setNumActiveHabits] = useState(null)
-
-  // useEffect(() => {
-  //   setNumActiveHabits(
-  //     habits.reduce((acc, habit) => (habit.active ? acc + 1 : acc), 0),
-  //   )
-  // }, [habits])
 
   const handleOutsideClick = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -72,10 +65,10 @@ const ConfigModal = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed bg-zinc-700 inset-0 bg-opacity-50 flex items-center justify-center z-50"
       onClick={handleOutsideClick}
     >
-      <div className="bg-white p-6 rounded-lg shadow-xl" ref={modalRef}>
+      <div className="bg-zinc-950 p-6 rounded-lg shadow-xl" ref={modalRef}>
         <h3 className="text-xl font-bold mb-4">Habit Configuration</h3>
         <div>
           <table className="min-w-full">
@@ -89,16 +82,18 @@ const ConfigModal = ({
             <tbody>
               {habits.map((habit, index) => (
                 <tr key={index}>
-                  <td className="border px-4 py-2">{habit.name}</td>
-                  <td className="border px-4 py-2">
+                  <td className="border border-gray-600 px-4 py-2">
+                    {habit.name}
+                  </td>
+                  <td className="border border-gray-600 px-4 py-2">
                     <button
-                      className={`px-4 py-2 rounded ${habit.active ? "bg-red-400" : "bg-green-400"} text-white`}
+                      className={`px-4 py-2 rounded ${habit.active ? "bg-rose-500" : "bg-emerald-500"} text-white`}
                       onClick={() => toggleHabitActive(habit)}
                     >
                       {habit.active ? "Hide" : "Show"}
                     </button>
                   </td>
-                  <td className="border px-4 py-2">
+                  <td className="border border-gray-600 px-4 py-2">
                     <button
                       className={classnames("mx-2 text-xl", {
                         invisible: !shouldShowArrow(index, "up"),
