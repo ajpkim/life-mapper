@@ -47,6 +47,10 @@ const ControlsModal = ({ isOpen, onClose }) => {
               <td className={tableDataClassNames}>Export habit data json</td>
             </tr>
             <tr>
+              <td className={tableDataClassNames}>t</td>
+              <td className={tableDataClassNames}>Jump to today</td>
+            </tr>
+            <tr>
               <td className={tableDataClassNames}>← ↑ ↓ →</td>
               <td className={tableDataClassNames}>Change active day</td>
             </tr>

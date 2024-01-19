@@ -53,6 +53,7 @@ const Habit = ({
       !isDone && !isFuture && !isBeforeHabitCreated && "text-rose-500",
       isBeforeHabitCreated && !isDone && "text-gray-400",
       isFuture && "text-gray-400 blur-sm",
+      isFuture && isFocused && "text-gray-400 blur-none",
       isFocused && "border-2 border-blue-400 outline-none",
     )
   }
