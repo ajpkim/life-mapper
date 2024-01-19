@@ -8,6 +8,7 @@ import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
 
 const Habits = () => {
   const [habits, setHabits] = useState(null)
+  const [numActiveHabits, setNumActiveHabits] = useState(0)
   const [activeHabitIndex, setActiveHabitIndex] = useState(0)
   const [today, setToday] = useState(formatDate(new Date()))
   const [activeDay, setActiveDay] = useState(null)
@@ -25,6 +26,7 @@ const Habits = () => {
     const year = today.getFullYear()
     const daysInMonth = getDaysInMonth(month, year)
     setActiveDay(day)
+    setToday(today)
     setMonth(month)
     setYear(year)
     setDaysInMonth(daysInMonth)
@@ -43,45 +45,100 @@ const Habits = () => {
   }, [])
 
   useEffect(() => {
+    if (habits !== null)
+      setNumActiveHabits(
+        habits.reduce((acc, habit) => (habit.active ? acc + 1 : acc), 0),
+      )
+  }, [habits])
+
+  useEffect(() => {
     const handleKeyDown = (event) => {
+      // Active habit navigation
       if (event.key === "Tab" && !event.shiftKey) {
         event.preventDefault()
-        setActiveHabitIndex((prev) => (prev + 1) % habits.length)
+        setActiveHabitIndex((prev) => (prev + 1) % numActiveHabits)
       }
       if (event.key === "Tab" && event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) =>
-          prev === 0 ? habits.length - 1 : prev - 1,
+          prev === 0 ? numActiveHabits - 1 : prev - 1,
         )
       }
-      if (event.key === "ArrowRight") {
+      if (event.key === "ArrowRight" && event.shiftKey) {
+        event.preventDefault()
+        setActiveHabitIndex((prev) =>
+          prev === numActiveHabits - 1 ? 0 : prev + 1,
+        )
+      }
+      if (event.key === "ArrowLeft" && event.shiftKey) {
+        event.preventDefault()
+        setActiveHabitIndex((prev) =>
+          prev === 0 ? numActiveHabits - 1 : prev - 1,
+        )
+      }
+      if (event.key === "ArrowUp" && event.shiftKey) {
+        event.preventDefault()
+        setActiveHabitIndex((prev) => Math.max(prev - 3, 0))
+      }
+      if (event.key === "ArrowDown" && event.shiftKey) {
+        event.preventDefault()
+        setActiveHabitIndex((prev) => Math.min(prev + 3, numActiveHabits - 1))
+      }
+      // Active day navigation
+      if (event.key === "ArrowRight" && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => (prev % daysInMonth) + 1)
       }
-      if (event.key === "ArrowLeft") {
+      if (event.key === "ArrowLeft" && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => (prev === 1 ? daysInMonth : prev - 1))
       }
-      if (event.key === "ArrowUp") {
+      if (event.key === "ArrowUp" && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => Math.max(prev - 7, 1))
       }
-      if (event.key === "ArrowDown") {
+      if (event.key === "ArrowDown" && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => Math.min(prev + 7, daysInMonth))
       }
+      // Export data
+      if (event.key === "e") {
+        if (!isAddingHabit && !isConfigMode) {
+          event.preventDefault()
+          const json = JSON.stringify(habits, null, 2)
+          const blob = new Blob([json], { type: "application/json" })
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement("a")
+          link.href = url
+          link.download = "habits.json"
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          URL.revokeObjectURL(url)
+        }
+      }
+      // Add new habit
       if (event.key === "n") {
         if (!isAddingHabit && !isConfigMode) {
           event.preventDefault()
           setIsAddingHabit(true)
         }
       }
+      // Habit config mode
       if (event.key === "c") {
         if (!isAddingHabit) {
           event.preventDefault()
           setIsConfigMode(!isConfigMode)
         }
       }
+      // Habit config mode
+      if (event.key === "t") {
+        if (!isAddingHabit && !isConfigMode) {
+          event.preventDefault()
+          setActiveDay(today.getDate())
+        }
+      }
+      // Return to main habits page
       if (event.key === "Escape") {
         event.preventDefault()
         setIsAddingHabit(false)
@@ -93,7 +150,14 @@ const Habits = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [daysInMonth, habits, isReorderMode, isConfigMode, isAddingHabit])
+  }, [
+    daysInMonth,
+    habits,
+    isReorderMode,
+    isConfigMode,
+    isAddingHabit,
+    numActiveHabits,
+  ])
 
   const handleDateClick = (day, name) => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
@@ -185,6 +249,7 @@ const Habits = () => {
           onClose={handleConfigModalClose}
           onUpdateHabit={handleUpdateHabit}
           habits={habits}
+          numActiveHabits={numActiveHabits}
         />
         <NewHabitModal
           isOpen={isAddingHabit}

@@ -2,15 +2,21 @@ import axios from "axios"
 import classnames from "classnames"
 import { useEffect, useMemo, useState, useRef } from "react"
 
-const ConfigModal = ({ isOpen, onClose, onUpdateHabit, habits }) => {
+const ConfigModal = ({
+  isOpen,
+  onClose,
+  onUpdateHabit,
+  habits,
+  numActiveHabits,
+}) => {
   const modalRef = useRef(null)
-  const [numActiveHabits, setNumActiveHabits] = useState(null)
+  // const [numActiveHabits, setNumActiveHabits] = useState(null)
 
-  useEffect(() => {
-    setNumActiveHabits(
-      habits.reduce((acc, habit) => (habit.active ? acc + 1 : acc), 0),
-    )
-  }, [habits])
+  // useEffect(() => {
+  //   setNumActiveHabits(
+  //     habits.reduce((acc, habit) => (habit.active ? acc + 1 : acc), 0),
+  //   )
+  // }, [habits])
 
   const handleOutsideClick = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
