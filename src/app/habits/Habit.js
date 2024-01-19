@@ -38,11 +38,12 @@ const Habit = ({
     return stat ? stat.stat : 0
   }
 
+  // TODO: Update to using actual Date objs everywhere
   const getDateClassNames = (day) => {
     const date = formatDate(new Date(year, month, day))
     const habitCreationDate = formatDate(new Date(createdAt))
     const isDone = getDateStat(date)
-    const isFuture = date > today
+    const isFuture = date > formatDate(today)
     const isBeforeHabitCreated = date < habitCreationDate
     const isFocused = isActive && day === activeDay
 
@@ -50,8 +51,9 @@ const Habit = ({
       "w-6 h-6 rounded-sm flex justify-center items-center text-xs",
       isDone && "text-emerald-500",
       !isDone && !isFuture && !isBeforeHabitCreated && "text-rose-500",
-      (isFuture || isBeforeHabitCreated) && "text-gray-400",
-      isFocused && "border-2 border-black outline-none",
+      isBeforeHabitCreated && !isDone && "text-gray-400",
+      isFuture && "text-gray-400 blur-sm",
+      isFocused && "border-2 border-blue-400 outline-none",
     )
   }
 
@@ -84,7 +86,7 @@ const Habit = ({
     <div className="flex flex-col items-center">
       <div
         className={classNames("p-2 flex flex-col items-center border-2", {
-          "border-blue-500": isActive,
+          "border-blue-400": isActive,
           "border-transparent": !isActive,
         })}
       >
