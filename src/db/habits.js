@@ -5,7 +5,6 @@ const dbPath =
   process.env.NEXT_PUBLIC_DATABASE_PATH || path.join(__dirname, "habits.db")
 
 async function openDb() {
-  console.log("dbPath:", dbPath)
   return open({
     filename: dbPath,
     driver: sqlite3.Database,
@@ -15,7 +14,9 @@ async function openDb() {
 // TODO: Remove requirement for ID
 export async function importJSON(filepath) {
   const db = await openDb()
-  data = require(filepath)
+  // data = require(filepath)
+  // data = await )
+  const data = await fs.readFile(dataPath, "utf8")
   for (const habit of data) {
     await db.run(
       "INSERT INTO habits (id, name, active, display_num, created_at) VALUES (?, ?, ?, ?, ?)",
