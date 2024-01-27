@@ -11,11 +11,8 @@ async function openDb() {
   })
 }
 
-// TODO: Remove requirement for ID
 export async function importJSON(filepath) {
   const db = await openDb()
-  // data = require(filepath)
-  // data = await )
   const data = await fs.readFile(dataPath, "utf8")
   for (const habit of data) {
     await db.run(
@@ -58,13 +55,17 @@ export async function createHabit(name) {
   )
   const habitId = insertRes.lastID
   const habitRes = await db.get("SELECT * FROM habits WHERE id = ?", [habitId])
-
   await db.close()
-
   return {
     ...habitRes,
     stats: [],
   }
+}
+
+export async function deleteHabit(id) {
+  const db = await openDb()
+  await db.run("DELETE FROM habits WHERE id = ?", [id])
+  await db.close()
 }
 
 export async function getHabitsData() {

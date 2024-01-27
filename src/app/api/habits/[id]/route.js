@@ -1,4 +1,4 @@
-import { createOrUpdateHabitStat, updateHabit } from "@/db/habits"
+import { createOrUpdateHabitStat, deleteHabit, updateHabit } from "@/db/habits"
 
 // TODO: move this to /api/habits/stats
 export async function POST(request) {
@@ -37,6 +37,24 @@ export async function PATCH(request) {
     })
   } catch (error) {
     console.error(`Error updating habit ${id}:`, error)
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+}
+
+export async function DELETE(request) {
+  const id = request.url.split("/").pop()
+  console.log("\n\nin the DELETE for habit\n\n", id)
+  try {
+    await deleteHabit(id)
+    return new Response(null, {
+      status: 204,
+      headers: { "Content-Type": "application/json" },
+    })
+  } catch (error) {
+    console.error(`Error deleting habit ${id}:`, error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

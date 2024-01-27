@@ -228,6 +228,15 @@ const Habits = () => {
     }
   }
 
+  const handleDeleteHabit = async (habit) => {
+    try {
+      await axios.delete(`/api/habits/${habit.id}`)
+      setHabits((prevHabits) => prevHabits.filter((h) => h.id !== habit.id))
+    } catch (error) {
+      console.error(`Error deleting habit ${habit.id}`, error)
+    }
+  }
+
   const updateHabitStats = (name, updatedStat, date) => {
     setHabits((prevHabits) =>
       prevHabits.map((habit) => {
@@ -257,6 +266,7 @@ const Habits = () => {
           isOpen={isConfigMode}
           onClose={handleModalClose}
           onUpdateHabit={handleUpdateHabit}
+          onDeleteHabit={handleDeleteHabit}
           habits={habits}
           numActiveHabits={numActiveHabits}
         />

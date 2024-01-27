@@ -6,6 +6,7 @@ const ConfigModal = ({
   isOpen,
   onClose,
   onUpdateHabit,
+  onDeleteHabit,
   habits,
   numActiveHabits,
 }) => {
@@ -54,6 +55,10 @@ const ConfigModal = ({
     onUpdateHabit(newHabits[newIdx])
   }
 
+  const deleteHabit = (habit) => {
+    onDeleteHabit(habit)
+  }
+
   const shouldShowArrow = (index, direction) => {
     if (!habits[index].active) return false
     if (direction === "up") return index > 0
@@ -78,8 +83,9 @@ const ConfigModal = ({
             <thead>
               <tr>
                 <th className="px-4 py-2">Habit Name</th>
-                <th className="px-4 py-2">Toggle</th>
                 <th className="px-4 py-2">Reorder</th>
+                <th className="px-4 py-2">Toggle</th>
+                <th className="px-4 py-2">Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -90,30 +96,41 @@ const ConfigModal = ({
                   </td>
                   <td className="border border-gray-600 px-4 py-2">
                     <button
-                      className={`px-4 py-2 rounded ${habit.active ? "bg-rose-500" : "bg-emerald-500"} text-white`}
-                      onClick={() => toggleHabitActive(habit)}
-                    >
-                      {habit.active ? "Hide" : "Show"}
-                    </button>
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2">
-                    <button
-                      className={classnames("mx-2 text-xl", {
-                        invisible: !shouldShowArrow(index, "up"),
-                      })}
+                      className={classnames(
+                        "mx-2 p-1 text-xl hover:opacity-70",
+                        {
+                          invisible: !shouldShowArrow(index, "up"),
+                        },
+                      )}
                       onClick={() => moveHabit(habit, -1)}
                       disabled={index === 0}
                     >
                       ↑
                     </button>
                     <button
-                      className={classnames("text-xl", {
+                      className={classnames("p-1 text-xl hover:opacity-70", {
                         invisible: !shouldShowArrow(index, "down"),
                       })}
                       onClick={() => moveHabit(habit, 1)}
                       disabled={!shouldShowArrow(index, "down")}
                     >
                       ↓
+                    </button>
+                  </td>
+                  <td className="border border-gray-600 px-4 py-2">
+                    <button
+                      className={`px-4 py-2 rounded hover:opacity-70 ${habit.active ? "bg-emerald-500" : "bg-rose-500"} text-white`}
+                      onClick={() => toggleHabitActive(habit)}
+                    >
+                      {habit.active ? "Active" : "Inactive"}
+                    </button>
+                  </td>
+                  <td className="border border-gray-600 px-4 py-2">
+                    <button
+                      className="px-4 py-2 rounded hover:opacity-70"
+                      onClick={() => deleteHabit(habit)}
+                    >
+                      X
                     </button>
                   </td>
                 </tr>
