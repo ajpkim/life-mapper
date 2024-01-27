@@ -11,6 +11,7 @@ const Habits = () => {
   const [habits, setHabits] = useState(null)
   const [numActiveHabits, setNumActiveHabits] = useState(0)
   const [activeHabitIndex, setActiveHabitIndex] = useState(0)
+  const [activeDate, setActiveDate] = useState(formatDate(new Date()))
   const [today, setToday] = useState(formatDate(new Date()))
   const [activeDay, setActiveDay] = useState(null)
   const [month, setMonth] = useState(null)
@@ -171,6 +172,10 @@ const Habits = () => {
     numActiveHabits,
   ])
 
+  const getActiveDate = () => {
+    return new Date(year, month, activeDay)
+  }
+
   const handleDateClick = (day, name) => {
     const newActiveHabitIndex = habits.findIndex((habit) => habit.name === name)
     setActiveDay(day)
@@ -278,7 +283,7 @@ const Habits = () => {
       </div>
       <div className="relative pt-4">
         <div className="text-center">
-          {`${today.toLocaleString("en-us", { weekday: "long" })} ${activeDay} ${getMonthName(month)}, ${year}`}
+          {`${getActiveDate().toLocaleString("en-us", { weekday: "long" })} ${activeDay} ${getMonthName(month)}, ${year}`}
         </div>
         <div className="absolute pt-6 pr-32 top-0 right-0 font-light italic">
           Press ? to see controls
