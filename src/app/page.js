@@ -6,6 +6,9 @@ export default function Home() {
       <div className="max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex text-white">
         <ul>
           <li>
+            <Link href="/timer">Timer</Link>
+          </li>
+          <li>
             <Link href="/projects">Projects</Link>
           </li>
           <li>
