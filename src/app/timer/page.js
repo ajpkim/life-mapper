@@ -19,32 +19,37 @@ const Timer = () => {
     return () => clearInterval(intervalId)
   }, [timeLeft, timerIsRunning])
 
-  const toggleTimer = () => {
-    setTimerIsRunning(!timerIsRunning)
-  }
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.code === "Space") {
+        setTimerIsRunning(!timerIsRunning)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [timerIsRunning])
 
   const handleTimerEnd = async () => {
     const res = await axios.post("/api/timer")
     setTimerIsRunning(false)
-    setTimeLeft(600)
   }
 
   const minutes = Math.floor(timeLeft / 60)
   const seconds = timeLeft % 60
 
   return (
-    <div className="text-white">
+    <div>
       <div className="pt-36 text-center">
         <div className="text-8xl">{`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}</div>
         <div className="flex justify-center gap-4 mt-4">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={toggleTimer}
+            className="bg-emerald-500 hover:opacity-50 font-bold py-2 px-4 rounded"
+            onClick={() => setTimerIsRunning(!timerIsRunning)}
           >
             {timerIsRunning ? "Pause" : "Start"} Timer
           </button>
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-rose-500 hover:opacity-50 font-bold py-2 px-4 rounded"
             onClick={handleTimerEnd}
           >
             End Session
@@ -55,8 +60,4 @@ const Timer = () => {
   )
 }
 
-// <div className="flex">
-//   <button onClick={toggleTimer}>{}</button>
-//   <button onClick={handleTimerEnd}>End Session</button>
-// </div>
 export default Timer
