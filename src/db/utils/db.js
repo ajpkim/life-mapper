@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose()
 const path = require("path")
 const dbPath =
-  process.env.NEXT_PUBLIC_DATABASE_PATH || path.join(__dirname, "habits.db")
+  process.env.NEXT_PUBLIC_DATABASE_PATH || path.join(__dirname, "../habits.db")
 
 async function openDB() {
   return new Promise((resolve, reject) => {

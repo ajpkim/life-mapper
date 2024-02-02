@@ -17,7 +17,21 @@ id INTEGER PRIMARY KEY AUTOINCREMENT,
 habit_id INTEGER NOT NULL,
 date DATE NOT NULL,
 stat BOOLEAN NOT NULL,
-FOREIGN KEY (habit_id) REFERENCES habits(id)
+FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
+)`
+
+const createProjectsTable = `
+CREATE TABLE IF NOT EXISTS projects (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL UNIQUE
+)`
+
+const createTimeLog = `
+CREATE TABLE IF NOT EXISTS time_logs (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+seconds INTEGER NOT NULL,
+project_id INTEGER NOT NULL,
+FOREIGN KEY (project_id) REFERENCES projects(id)
 )`
 
 function createTable(db, sql, tableName) {
@@ -34,6 +48,8 @@ async function initDBSchema() {
   const db = await openDB()
   createTable(db, createHabitsTable, "Habit")
   createTable(db, createHabitStatsTable, "Habit Stats")
+  createTable(db, createProjectsTable, "Projects")
+  createTable(db, createTimeLog, "Time Logs")
   await closeDB(db)
 }
 

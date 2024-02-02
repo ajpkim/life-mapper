@@ -13,13 +13,7 @@ async function seedDB() {
     for (const habit of seedData.habits) {
       const { id, name, active, display_num, created_at } = habit
       const insertHabitSql = `INSERT INTO habits (id, name, active, display_num, created_at) VALUES (?, ?, ?, ?, ?)`
-      await db.run(insertHabitSql, [
-        id,
-        name,
-        active,
-        display_num,
-        created_at,
-      ])
+      await db.run(insertHabitSql, [id, name, active, display_num, created_at])
     }
 
     console.log("Seeding habits stats table.")
@@ -27,6 +21,13 @@ async function seedDB() {
       const { habit_id, date, stat } = habitStat
       const insertHabitStatSql = `INSERT INTO habit_stats (habit_id, date, stat) VALUES (?, ?, ?)`
       await db.run(insertHabitStatSql, [habit_id, date, stat])
+    }
+
+    console.log("Seeding projects table.")
+    for (const project of seedData.projects) {
+      const { id, name } = project
+      const insertSQL = `INSERT INTO projects (id, name) VALUES (?, ?)`
+      await db.run(insertSQL, [id, name])
     }
 
     console.log("Seeded database.")
