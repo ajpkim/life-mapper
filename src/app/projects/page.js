@@ -61,8 +61,16 @@ const Projects = () => {
       console.error(error)
     }
   }
+
   const handleUpdateProject = async (project) => {
     try {
+      const { data: newProject } = await axios.patch(
+        `/api/projects/${project.id}`,
+        project,
+      )
+      setProjects((prevProjects) =>
+        prevProjects.map((p) => (p.id === project.id ? project : p)),
+      )
     } catch (error) {
       console.error(error)
     }
@@ -87,9 +95,11 @@ const Projects = () => {
       </div>
       <div className="max-w-xl">
         <h1 className="text-2xl pb-4">PROJECTS</h1>
-        {projects.map((project) => (
-          <p key={project.id}>{project.name}</p>
-        ))}
+        {projects
+          .filter((project) => project.active)
+          .map((project, index) => (
+            <p key={project.id}>{project.name}</p>
+          ))}
       </div>
     </div>
   )

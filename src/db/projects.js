@@ -17,6 +17,14 @@ export async function createProject(name) {
   return projectRes
 }
 
+export async function updateProject(project) {
+  console.log(project)
+  const db = await openDb()
+  const updateSql = "UPDATE projects SET name = ?, active = ? WHERE id = ?"
+  await db.run(updateSql, [project.name, project.id])
+  await db.close()
+}
+
 export async function deleteProject(id) {
   const db = await openDb()
   const deleteSql = "DELETE FROM projects WHERE id = ?"

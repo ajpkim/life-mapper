@@ -1,6 +1,4 @@
-const sqlite3 = require("sqlite3").verbose()
-const path = require("path")
-const { openDB, closeDB } = require("./db")
+const { openDb } = require("./db")
 
 const createHabitsTable = `
 CREATE TABLE IF NOT EXISTS habits (
@@ -23,6 +21,7 @@ FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
 const createProjectsTable = `
 CREATE TABLE IF NOT EXISTS projects (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
+active BOOLEAN NOT NULL DEFAULT TRUE,
 name TEXT NOT NULL UNIQUE
 )`
 
@@ -45,12 +44,12 @@ function createTable(db, sql, tableName) {
 }
 
 async function initDBSchema() {
-  const db = await openDB()
+  const db = await openDb()
   createTable(db, createHabitsTable, "Habit")
   createTable(db, createHabitStatsTable, "Habit Stats")
   createTable(db, createProjectsTable, "Projects")
   createTable(db, createTimeLog, "Time Logs")
-  await closeDB(db)
+  await db.close()
 }
 
 initDBSchema()

@@ -17,40 +17,13 @@ const ConfigModal = ({
     }
   }
 
-  const toggleProjectActive = async (project) => {
-    const updatedProject = {
-      ...project,
-      active: !project.active,
-    }
-    onUpdateProject(updatedProject)
-  }
-
-  const moveProject = (project, direction) => {
-    /* Assumes projects are already sorted by display_num */
-    const swapDisplayNums = (arr, i, j) => {
-      const tmp = arr[i].display_num
-      arr[i].display_num = arr[j].display_num
-      arr[j].display_num = tmp
-    }
-
-    const newProjects = [...projects]
-    const idx = projects.indexOf(project)
-    const newIdx = idx + direction
-    swapDisplayNums(projects, idx, newIdx)
-
-    onUpdateProject(newProjects[idx])
-    onUpdateProject(newProjects[newIdx])
+  const updateProject = async (project) => {
+    console.log(project)
+    onUpdateProject(project)
   }
 
   const deleteProject = (project) => {
     onDeleteProject(project)
-  }
-
-  const shouldShowArrow = (index, direction) => {
-    if (!projects[index].active) return false
-    if (direction === "up") return index > 0
-    if (direction === "down") return index < numActiveProjects - 1
-    return false
   }
 
   if (!isOpen) return null
@@ -84,7 +57,9 @@ const ConfigModal = ({
                   <td className="border border-gray-600 px-4 py-2">
                     <button
                       className={`px-4 py-2 rounded hover:opacity-70 ${project.active ? "bg-emerald-500" : "bg-rose-500"} text-white`}
-                      onClick={() => toggleProjectActive(project)}
+                      onClick={() =>
+                        updateProject({ ...project, active: !project.active })
+                      }
                     >
                       {project.active ? "Active" : "Inactive"}
                     </button>

@@ -1,10 +1,10 @@
 const path = require("path")
 const fs = require("fs").promises
-const { openDB, closeDB } = require("./db")
+const { openDb } = require("./db")
 
 async function seedDB() {
   try {
-    const db = await openDB()
+    const db = await openDb()
     const dataPath = path.join(__dirname, "seedData.json")
     const jsonData = await fs.readFile(dataPath, "utf8")
     const seedData = JSON.parse(jsonData)
@@ -25,9 +25,9 @@ async function seedDB() {
 
     console.log("Seeding projects table.")
     for (const project of seedData.projects) {
-      const { id, name } = project
-      const insertSQL = `INSERT INTO projects (id, name) VALUES (?, ?)`
-      await db.run(insertSQL, [id, name])
+      const { id, name, active } = project
+      const insertSQL = `INSERT INTO projects (id, name) VALUES (?, ?, ?)`
+      await db.run(insertSQL, [id, name, active])
     }
 
     console.log("Seeded database.")

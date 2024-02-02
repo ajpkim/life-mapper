@@ -1,10 +1,10 @@
 const path = require("path")
 const fs = require("fs").promises
-const { openDB, closeDB } = require("./db")
+const { openDb } = require("./db")
 
 async function importDB(filepath) {
   try {
-    const db = await openDB()
+    const db = await openDb()
     const dataPath = path.resolve(filepath)
     const jsonData = await fs.readFile(dataPath, "utf8")
     const importData = JSON.parse(jsonData)
@@ -23,7 +23,7 @@ async function importDB(filepath) {
     }
 
     console.log("Imported database.")
-    await closeDB(db)
+    await db.close()
   } catch (error) {
     console.error("Failed to import the database:", error.message)
   }
