@@ -4,7 +4,7 @@ import axios from "axios"
 import LogSessionModal from "./LogSessionModal"
 
 const Timer = () => {
-  const [sessionLength, setSessionLength] = useState(2)
+  const [sessionLength, setSessionLength] = useState(1500)
   const [timeLeft, setTimeLeft] = useState(2)
   const [sessionIsActive, setSessionIsActive] = useState(false)
   const [logSessionMode, setLogSessionMode] = useState(false)
