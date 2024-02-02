@@ -4,7 +4,7 @@ import Link from "next/link"
 import classNames from "classnames"
 
 const Sidebar = () => {
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
 
   const linksContainerClass = classNames({
     flex: true,

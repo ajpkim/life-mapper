@@ -20,7 +20,12 @@ const LogSessionModal = ({ isOpen, onClose, sessionSeconds }) => {
   }, [])
 
   const handleProjectSelection = ({ id, name }) => {
-    console.log(id, name)
+    try {
+      // const response = axios.post("/api/time")
+      console.log(id, name)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const formatSessionTime = () => {

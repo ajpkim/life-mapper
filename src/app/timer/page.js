@@ -4,14 +4,14 @@ import axios from "axios"
 import LogSessionModal from "./LogSessionModal"
 
 const Timer = () => {
-  const [startTime, setStartTime] = useState(5)
-  const [timeLeft, setTimeLeft] = useState(1)
-  const [timerIsRunning, setTimerIsRunning] = useState(false)
+  const [sessionLength, setSessionLength] = useState(2)
+  const [timeLeft, setTimeLeft] = useState(2)
+  const [sessionIsActive, setSessionIsActive] = useState(false)
   const [logSessionMode, setLogSessionMode] = useState(false)
 
   useEffect(() => {
     let intervalId
-    if (timerIsRunning && timeLeft > 0) {
+    if (sessionIsActive && timeLeft > 0) {
       intervalId = setInterval(() => {
         setTimeLeft(timeLeft - 1)
       }, 1000)
@@ -21,25 +21,26 @@ const Timer = () => {
     }
 
     return () => clearInterval(intervalId)
-  }, [timeLeft, timerIsRunning])
+  }, [timeLeft, sessionIsActive])
 
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.code === "Space") {
-        setTimerIsRunning(!timerIsRunning)
+        setSessionIsActive(!sessionIsActive)
       }
     }
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [timerIsRunning])
+  }, [sessionIsActive])
 
   const handleTimerEnd = async () => {
     const res = await axios.post("/api/timer")
-    setTimerIsRunning(false)
+    setSessionIsActive(false)
   }
 
   const handleCloseModal = () => {
     setLogSessionMode(false)
+    setTimeLeft(sessionLength)
   }
 
   const minutes = Math.floor(timeLeft / 60)
@@ -52,9 +53,9 @@ const Timer = () => {
         <div className="flex justify-center gap-4 mt-4">
           <button
             className="bg-emerald-500 hover:opacity-50 font-bold py-2 px-4 rounded"
-            onClick={() => setTimerIsRunning(!timerIsRunning)}
+            onClick={() => setSessionIsActive(!sessionIsActive)}
           >
-            {timerIsRunning ? "Pause" : "Start"} Timer
+            {sessionIsActive ? "Pause" : "Start"} Timer
           </button>
           <button
             className="bg-rose-500 hover:opacity-50 font-bold py-2 px-4 rounded"
@@ -65,7 +66,7 @@ const Timer = () => {
           <LogSessionModal
             isOpen={logSessionMode}
             onClose={handleCloseModal}
-            sessionSeconds={75}
+            sessionSeconds={sessionLength}
           />
         </div>
       </div>
