@@ -5,7 +5,7 @@ import LogSessionModal from "./LogSessionModal"
 
 const Timer = () => {
   const [startTime, setStartTime] = useState(5)
-  const [timeLeft, setTimeLeft] = useState(3)
+  const [timeLeft, setTimeLeft] = useState(1)
   const [timerIsRunning, setTimerIsRunning] = useState(false)
   const [logSessionMode, setLogSessionMode] = useState(false)
 
@@ -62,7 +62,11 @@ const Timer = () => {
           >
             End Session
           </button>
-          <LogSessionModal isOpen={logSessionMode} onClose={handleCloseModal} />
+          <LogSessionModal
+            isOpen={logSessionMode}
+            onClose={handleCloseModal}
+            sessionSeconds={75}
+          />
         </div>
       </div>
     </div>

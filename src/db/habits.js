@@ -1,15 +1,4 @@
-const sqlite3 = require("sqlite3")
-const { open } = require("sqlite")
-const path = require("path")
-const dbPath =
-  process.env.NEXT_PUBLIC_DATABASE_PATH || path.join(__dirname, "habits.db")
-
-async function openDb() {
-  return open({
-    filename: dbPath,
-    driver: sqlite3.Database,
-  })
-}
+const { openDb } = require("./utils/db")
 
 export async function importJSON(filepath) {
   const db = await openDb()
