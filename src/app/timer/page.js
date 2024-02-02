@@ -1,10 +1,13 @@
 "use client"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import LogSessionModal from "./LogSessionModal"
 
 const Timer = () => {
-  const [timeLeft, setTimeLeft] = useState(10)
+  const [startTime, setStartTime] = useState(5)
+  const [timeLeft, setTimeLeft] = useState(3)
   const [timerIsRunning, setTimerIsRunning] = useState(false)
+  const [logSessionMode, setLogSessionMode] = useState(false)
 
   useEffect(() => {
     let intervalId
@@ -13,6 +16,7 @@ const Timer = () => {
         setTimeLeft(timeLeft - 1)
       }, 1000)
     } else if (timeLeft <= 0) {
+      setLogSessionMode(true)
       handleTimerEnd()
     }
 
@@ -32,6 +36,10 @@ const Timer = () => {
   const handleTimerEnd = async () => {
     const res = await axios.post("/api/timer")
     setTimerIsRunning(false)
+  }
+
+  const handleCloseModal = () => {
+    setLogSessionMode(false)
   }
 
   const minutes = Math.floor(timeLeft / 60)
@@ -54,6 +62,7 @@ const Timer = () => {
           >
             End Session
           </button>
+          <LogSessionModal isOpen={logSessionMode} onClose={handleCloseModal} />
         </div>
       </div>
     </div>
