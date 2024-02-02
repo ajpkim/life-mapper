@@ -46,7 +46,6 @@ export async function PATCH(request) {
 
 export async function DELETE(request) {
   const id = request.url.split("/").pop()
-  console.log("\n\nin the DELETE for habit\n\n", id)
   try {
     await deleteHabit(id)
     return new Response(null, {

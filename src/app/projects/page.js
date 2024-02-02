@@ -2,10 +2,12 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import NewProjectModal from "./NewProjectModal"
+import ConfigModal from "./ConfigModal"
 
 const Projects = () => {
   const [projects, setProjects] = useState(null)
   const [isAddProjectMode, setIsAddProjectMode] = useState(false)
+  const [isConfigMode, setIsConfigMode] = useState(false)
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -24,6 +26,9 @@ const Projects = () => {
     const handleKeyDown = (event) => {
       if (event.key === "n") {
         setIsAddProjectMode(true)
+      }
+      if (event.key === "c") {
+        setIsConfigMode(!isConfigMode)
       }
       if (event.key === "Escape") {
         handleModalClose()
@@ -48,6 +53,21 @@ const Projects = () => {
     }
   }
 
+  const handleDeleteProject = async (project) => {
+    try {
+      await axios.delete(`/api/projects/${project.id}`)
+      setProjects((prev) => prev.filter((p) => p.id !== project.id))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  const handleUpdateProject = async (project) => {
+    try {
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   if (!projects) return <h1>Loading</h1>
   return (
     <div className="flex flex-1 pt-4 pl-64">
@@ -56,6 +76,13 @@ const Projects = () => {
           isOpen={isAddProjectMode}
           onClose={handleModalClose}
           onSubmit={handleNewProjectSubmit}
+        />
+        <ConfigModal
+          isOpen={isConfigMode}
+          onClose={handleModalClose}
+          onUpdateProject={handleUpdateProject}
+          onDeleteProject={handleDeleteProject}
+          projects={projects}
         />
       </div>
       <div className="max-w-xl">

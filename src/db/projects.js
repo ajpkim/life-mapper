@@ -14,6 +14,12 @@ export async function createProject(name) {
   const selectSql = "SELECT * FROM projects WHERE name = ?"
   const projectRes = await db.get(selectSql, [name])
   await db.close()
-  console.log(projectRes)
   return projectRes
+}
+
+export async function deleteProject(id) {
+  const db = await openDb()
+  const deleteSql = "DELETE FROM projects WHERE id = ?"
+  await db.run(deleteSql, [id])
+  await db.close()
 }
