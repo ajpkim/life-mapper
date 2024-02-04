@@ -25,23 +25,33 @@ const Projects = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "n") {
-        setIsAddProjectMode(true)
+        if (!isAddProjectMode && !isConfigMode) {
+          event.preventDefault()
+          setIsAddProjectMode(true)
+        }
       }
       if (event.key === "c") {
-        setIsConfigMode(!isConfigMode)
+        if (!isAddProjectMode) {
+          event.preventDefault()
+          setIsConfigMode(!isConfigMode)
+        }
       }
       if (event.key === "Escape") {
-        handleModalClose()
+        if (isAddProjectMode || isConfigMode) {
+          event.preventDefault()
+          handleModalClose()
+        }
       }
     }
     document.addEventListener("keydown", handleKeyDown)
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [])
+  }, [isAddProjectMode, isConfigMode])
 
   const handleModalClose = () => {
     setIsAddProjectMode(false)
+    setIsConfigMode(false)
   }
 
   const handleNewProjectSubmit = async (name) => {
