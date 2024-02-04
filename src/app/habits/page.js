@@ -5,7 +5,7 @@ import Habit from "./Habit"
 import NewHabitModal from "./NewHabitModal"
 import ControlsModal from "./ControlsModal"
 import ConfigModal from "./ConfigModal"
-import { formatDate, getMonthName, getDaysInMonth } from "@/utils"
+import { downloadData, formatDate, getMonthName, getDaysInMonth } from "@/utils"
 
 const Habits = () => {
   const [habits, setHabits] = useState(null)
@@ -120,16 +120,7 @@ const Habits = () => {
       if (event.key === "e") {
         if (!isAddHabitMode && !isConfigMode) {
           event.preventDefault()
-          const json = JSON.stringify(habits, null, 2)
-          const blob = new Blob([json], { type: "application/json" })
-          const url = URL.createObjectURL(blob)
-          const link = document.createElement("a")
-          link.href = url
-          link.download = "habits.json"
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-          URL.revokeObjectURL(url)
+          downloadData()
         }
       }
       // Add new habit
