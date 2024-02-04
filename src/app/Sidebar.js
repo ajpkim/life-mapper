@@ -20,7 +20,7 @@ const Sidebar = () => {
 
       <div className={linksContainerClass}>
         <Link href="/">Home</Link>
-        <Link href="/timer">Timer</Link>
+        <Link href="/time">Time</Link>
         <Link href="/projects">Projects</Link>
         <Link href="/habits">Habits</Link>
       </div>

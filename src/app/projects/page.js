@@ -104,11 +104,13 @@ const Projects = () => {
         />
       </div>
       <div className="max-w-xl">
-        <h1 className="text-2xl pb-4">PROJECTS</h1>
+        <h1 className="text-3xl pb-4">PROJECTS</h1>
         {projects
           .filter((project) => project.active)
           .map((project, index) => (
-            <p key={project.id}>{project.name}</p>
+            <p className="text-2xl" key={project.id}>
+              {project.name}
+            </p>
           ))}
       </div>
     </div>
