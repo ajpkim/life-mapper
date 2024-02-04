@@ -1,6 +1,5 @@
 import { createOrUpdateHabitStat, deleteHabit, updateHabit } from "@/db/habits"
 
-// TODO: move this to /api/habits/stats
 export async function POST(request) {
   try {
     const { name, date, stat } = await request.json()
@@ -13,7 +12,6 @@ export async function POST(request) {
       },
     )
   } catch (error) {
-    console.error("Error in POST /api/habits/[name]:", error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
@@ -44,8 +42,8 @@ export async function PATCH(request) {
   }
 }
 
-export async function DELETE(request) {
-  const id = request.url.split("/").pop()
+export async function DELETE(request, params) {
+  const { id } = params.params
   try {
     await deleteHabit(id)
     return new Response(null, {
@@ -53,7 +51,6 @@ export async function DELETE(request) {
       headers: { "Content-Type": "application/json" },
     })
   } catch (error) {
-    console.error(`Error deleting habit ${id}:`, error)
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
