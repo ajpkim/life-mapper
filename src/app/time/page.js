@@ -1,16 +1,18 @@
 "use client"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import LoggedTimeTable from "./LoggedTimeTable"
 import LogSessionModal from "./LogSessionModal"
 import ConfigModal from "./ConfigModal"
 
 const Timer = () => {
   const [timerConfig, setTimerConfig] = useState({
-    minutes: 0,
-    seconds: 1,
+    minutes: 25,
+    seconds: 0,
   })
   const initTimeRemaining = timerConfig.minutes * 60 + timerConfig.seconds
   const [timeRemaining, setTimeRemaining] = useState(initTimeRemaining)
+  const [isDisplayLogsMode, setIsDisplayLogsMode] = useState(false)
   const [isWorkMode, setIsWorkMode] = useState(true)
   const [isSessionActive, setIsSessionActive] = useState(false)
   const [isConfigMode, setIsConfigMode] = useState(false)
@@ -27,10 +29,6 @@ const Timer = () => {
       intervalId = setInterval(() => {
         setTimeRemaining(timeRemaining - 1)
       }, 1000)
-    }
-    if (timeRemaining <= 0 && isWorkMode) {
-      setIsLogSessionMode(true)
-      handleTimerEnd()
     } else if (timeRemaining <= 0) {
       handleTimerEnd()
     }
@@ -83,6 +81,10 @@ const Timer = () => {
         event.preventDefault()
         setIsConfigMode(!isConfigMode)
       }
+      if (event.key === "l") {
+        event.preventDefault()
+        setIsDisplayLogsMode(!isDisplayLogsMode)
+      }
       if (event.key === "Space") {
         event.preventDefault()
         setIsSessionActive(!isSessionActive)
@@ -96,7 +98,14 @@ const Timer = () => {
     }
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isSessionActive, isLogSessionMode, isConfigMode, isWorkMode, timerConfig])
+  }, [
+    isSessionActive,
+    isLogSessionMode,
+    isConfigMode,
+    isWorkMode,
+    timerConfig,
+    isDisplayLogsMode,
+  ])
 
   const handleModalClose = () => {
     setIsLogSessionMode(false)
@@ -111,8 +120,15 @@ const Timer = () => {
   }
 
   const handleTimerEnd = async () => {
-    const res = await axios.post("/api/timer")
+    const res = await axios.post("/api/time/notify")
     setIsSessionActive(false)
+    if (isWorkMode && timeRemaining !== totalTimerSeconds()) {
+      setIsLogSessionMode(true)
+    }
+  }
+
+  const getElapsedTime = () => {
+    return totalTimerSeconds() - timeRemaining
   }
 
   const handleCloseModal = () => {
@@ -129,7 +145,7 @@ const Timer = () => {
 
   return (
     <div>
-      <div className="pt-36 text-center">
+      <div className="pt-36 text-center w-full max-w-2xl mx-auto">
         {!isWorkMode && <p className="text-2xl">BREAK MODE</p>}
         <div className="text-8xl">{`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}</div>
         <div className="flex justify-center gap-4 mt-4">
@@ -148,7 +164,7 @@ const Timer = () => {
           <LogSessionModal
             isOpen={isLogSessionMode}
             onClose={handleCloseModal}
-            sessionSeconds={totalTimerSeconds()}
+            sessionSeconds={getElapsedTime()}
           />
           <ConfigModal
             isOpen={isConfigMode}
@@ -157,6 +173,11 @@ const Timer = () => {
             updateConfig={handleUpdateTimerConfig}
           />
         </div>
+        {isDisplayLogsMode && (
+          <div className="mt-4 text-left w-full">
+            <LoggedTimeTable />
+          </div>
+        )}
       </div>
     </div>
   )

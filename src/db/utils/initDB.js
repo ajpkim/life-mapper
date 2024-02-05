@@ -29,6 +29,7 @@ const createTimeLog = `
 CREATE TABLE IF NOT EXISTS time_logs (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 seconds INTEGER NOT NULL,
+date DATE NOT NULL,
 project_id INTEGER NOT NULL,
 FOREIGN KEY (project_id) REFERENCES projects(id)
 )`

@@ -1,22 +1,22 @@
 const { openDb } = require("./utils/db")
 
-export async function importJSON(filepath) {
-  const db = await openDb()
-  const data = await fs.readFile(dataPath, "utf8")
-  for (const habit of data) {
-    await db.run(
-      "INSERT INTO habits (id, name, active, display_num, created_at) VALUES (?, ?, ?, ?, ?)",
-      [habit.id, habit.name, habit.active, habit.display_num, habit.created_at],
-    )
-    for (const stat of habit.stats) {
-      await db.run(
-        "INSERT INTO habit_stats (id, habit_id, date, stat) VALUES (?, ?, ?, ?)",
-        [stat.id, habit.id, stat.date, stat.stat],
-      )
-    }
-  }
-  await db.close()
-}
+// export async function importJSON(filepath) {
+//   const db = await openDb()
+//   const data = await fs.readFile(dataPath, "utf8")
+//   for (const habit of data) {
+//     await db.run(
+//       "INSERT INTO habits (id, name, active, display_num, created_at) VALUES (?, ?, ?, ?, ?)",
+//       [habit.id, habit.name, habit.active, habit.display_num, habit.created_at],
+//     )
+//     for (const stat of habit.stats) {
+//       await db.run(
+//         "INSERT INTO habit_stats (id, habit_id, date, stat) VALUES (?, ?, ?, ?)",
+//         [stat.id, habit.id, stat.date, stat.stat],
+//       )
+//     }
+//   }
+//   await db.close()
+// }
 
 export async function getHabits() {
   const db = await openDb()

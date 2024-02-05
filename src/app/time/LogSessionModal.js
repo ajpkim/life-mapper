@@ -1,6 +1,7 @@
 import classnames from "classnames"
 import { useEffect, useMemo, useState, useRef } from "react"
 import axios from "axios"
+import { formatDate } from "@/utils"
 
 const LogSessionModal = ({ isOpen, onClose, sessionSeconds }) => {
   const [projects, setProjects] = useState([])
@@ -18,9 +19,12 @@ const LogSessionModal = ({ isOpen, onClose, sessionSeconds }) => {
   }, [])
 
   const logTimeToProject = async ({ id, name }) => {
+    const today = new Date()
+    const date = formatDate(today)
     try {
       await axios.post(`/api/projects/${id}/time`, {
         seconds: sessionSeconds,
+        date: date,
       })
     } catch (error) {
       console.error(error)
@@ -47,7 +51,7 @@ const LogSessionModal = ({ isOpen, onClose, sessionSeconds }) => {
             {projects.map((project) => (
               <li
                 key={project.id}
-                className="cursor-pointer hover:bg-zinc-800 p-2 rounded"
+                className="cursor-pointer hover:bg-zinc-800 p-2 rounded text-left pl-8 text-lg"
                 onClick={() => logTimeToProject(project)}
               >
                 {project.name}
@@ -57,9 +61,9 @@ const LogSessionModal = ({ isOpen, onClose, sessionSeconds }) => {
         </div>
         <button
           onClick={onClose}
-          className="mt-4 px-4 py-2 bg-emerald-500 text-white rounded"
+          className="mt-4 px-4 py-2 bg-rose-500 text-white rounded"
         >
-          Done
+          Skip
         </button>
       </div>
     </div>

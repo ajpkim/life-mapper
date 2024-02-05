@@ -27,3 +27,36 @@ export function getMonthName(monthIndex) {
   date.setMonth(monthIndex)
   return date.toLocaleString("en-US", { month: "long" })
 }
+
+export function formatSeconds(seconds) {
+  const min = Math.floor(seconds / 60)
+  const minStr = min < 10 ? `0${min}` : `${min}`
+  const sec = seconds % 60
+  const secStr = sec < 10 ? `0${sec}` : `${sec}`
+  return `${minStr}:${secStr}`
+}
+
+export function secondsToHHMMSS(seconds) {
+  const hours = Math.floor(seconds / 60 ** 2)
+  const hourStr = hours < 10 ? `0${hours}` : hours
+  const remainder = seconds - hours * 60 ** 2
+  const minutes = Math.floor(remainder / 60)
+  const minutesStr = minutes < 10 ? `0${minutes}` : minutes
+  const sec = remainder % 60
+  const secStr = sec < 10 ? `0${sec}` : sec
+
+  let res = ""
+  if (hours > 0) {
+    res += `${hours}hr `
+  }
+  if (minutes > 0) {
+    res += `${minutes}m `
+  }
+  if (sec > 0) {
+    res += `${sec}s`
+  }
+  return res
+
+  // `${hourStr}:${minutesStr}:${secStr}`
+  // return `${hours}hr ${minutes}m ${sec}s`
+}
