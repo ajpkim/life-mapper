@@ -1,9 +1,9 @@
-const sqlite3 = require("sqlite3").verbose()
-const { open } = require("sqlite")
-const path = require("path")
+const sqlite3 = require('sqlite3').verbose()
+const { open } = require('sqlite')
+const path = require('path')
 const dbPath =
   process.env.NEXT_PUBLIC_DATABASE_PATH ||
-  path.join(__dirname, "../life_map.db")
+  path.join(__dirname, '../life_map.db')
 
 async function openDb() {
   return open({
@@ -16,10 +16,10 @@ async function importData(jsonData) {
   const db = await openDb()
   for (const [tableName, rows] of Object.entries(jsonData)) {
     for (const row of rows) {
-      const columns = Object.keys(row).join(", ")
+      const columns = Object.keys(row).join(', ')
       const placeholders = Object.keys(row)
-        .map((_) => "?")
-        .join(", ")
+        .map((_) => '?')
+        .join(', ')
       const sql = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders})`
       await db.run(sql, Object.values(row))
     }

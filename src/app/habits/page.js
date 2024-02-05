@@ -1,11 +1,11 @@
-"use client"
-import { useEffect, useState } from "react"
-import axios from "axios"
-import Habit from "./Habit"
-import NewHabitModal from "./NewHabitModal"
-import ControlsModal from "./ControlsModal"
-import ConfigModal from "./ConfigModal"
-import { downloadData, formatDate, getMonthName, getDaysInMonth } from "@/utils"
+'use client'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import Habit from './Habit'
+import NewHabitModal from './NewHabitModal'
+import ControlsModal from './ControlsModal'
+import ConfigModal from './ConfigModal'
+import { downloadData, formatDate, getMonthName, getDaysInMonth } from '@/utils'
 
 const Habits = () => {
   const [habits, setHabits] = useState(null)
@@ -39,10 +39,10 @@ const Habits = () => {
   useEffect(() => {
     const fetchHabitsData = async () => {
       try {
-        const response = await axios.get("/api/habits")
+        const response = await axios.get('/api/habits')
         setHabits(response.data)
       } catch (error) {
-        console.error("Error fetching habit:", error)
+        console.error('Error fetching habit:', error)
       }
     }
     fetchHabitsData()
@@ -62,97 +62,97 @@ const Habits = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       // Active habit navigation
-      if (event.key === "Tab" && !event.shiftKey) {
+      if (event.key === 'Tab' && !event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) => (prev + 1) % numActiveHabits)
       }
-      if (event.key === "Tab" && event.shiftKey) {
+      if (event.key === 'Tab' && event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) =>
           prev === 0 ? numActiveHabits - 1 : prev - 1,
         )
       }
-      if (event.key === "ArrowRight" && event.shiftKey) {
+      if (event.key === 'ArrowRight' && event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) =>
           prev === numActiveHabits - 1 ? 0 : prev + 1,
         )
       }
-      if (event.key === "ArrowLeft" && event.shiftKey) {
+      if (event.key === 'ArrowLeft' && event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) =>
           prev === 0 ? numActiveHabits - 1 : prev - 1,
         )
       }
-      if (event.key === "ArrowUp" && event.shiftKey) {
+      if (event.key === 'ArrowUp' && event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) => Math.max(prev - 3, 0))
       }
-      if (event.key === "ArrowDown" && event.shiftKey) {
+      if (event.key === 'ArrowDown' && event.shiftKey) {
         event.preventDefault()
         setActiveHabitIndex((prev) => Math.min(prev + 3, numActiveHabits - 1))
       }
       // Active day navigation
-      if (event.key === "ArrowRight" && !event.shiftKey) {
+      if (event.key === 'ArrowRight' && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => (prev % daysInMonth) + 1)
       }
-      if (event.key === "ArrowLeft" && !event.shiftKey) {
+      if (event.key === 'ArrowLeft' && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => (prev === 1 ? daysInMonth : prev - 1))
       }
-      if (event.key === "ArrowUp" && !event.shiftKey) {
+      if (event.key === 'ArrowUp' && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => Math.max(prev - 7, 1))
       }
-      if (event.key === "ArrowDown" && !event.shiftKey) {
+      if (event.key === 'ArrowDown' && !event.shiftKey) {
         event.preventDefault()
         setActiveDay((prev) => Math.min(prev + 7, daysInMonth))
       }
       // Show controls
-      if (event.key === "?") {
+      if (event.key === '?') {
         if (!isAddHabitMode && !isConfigMode) {
           setIsControlsMode(true)
           setIsModalOpen(true)
         }
       }
       // Export data
-      if (event.key === "e") {
+      if (event.key === 'e') {
         if (!isAddHabitMode && !isConfigMode) {
           event.preventDefault()
           downloadData()
         }
       }
       // Add new habit
-      if (event.key === "n") {
+      if (event.key === 'n') {
         if (!isAddHabitMode && !isConfigMode) {
           event.preventDefault()
           setIsAddHabitMode(true)
         }
       }
       // Habit config mode
-      if (event.key === "c") {
+      if (event.key === 'c') {
         if (!isAddHabitMode) {
           event.preventDefault()
           setIsConfigMode(!isConfigMode)
         }
       }
       // Habit config mode
-      if (event.key === "t") {
+      if (event.key === 't') {
         if (!isAddHabitMode && !isConfigMode) {
           event.preventDefault()
           setActiveDay(today.getDate())
         }
       }
       // Return to main habits page
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         event.preventDefault()
         handleModalClose()
       }
     }
-    document.addEventListener("keydown", handleKeyDown)
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener("keydown", handleKeyDown)
+      document.removeEventListener('keydown', handleKeyDown)
     }
   }, [
     daysInMonth,
@@ -181,12 +181,12 @@ const Habits = () => {
 
   const handleNewHabitSubmit = async (name) => {
     try {
-      const response = await axios.post("/api/habits", { name })
+      const response = await axios.post('/api/habits', { name })
       setHabits([...habits, response.data])
       setIsAddHabitMode(false)
     } catch (error) {
       // TODO: Provide useful modal telling user that they tried to create a duplicate habit
-      console.error("Error adding new habit:", error)
+      console.error('Error adding new habit:', error)
     }
   }
 
@@ -274,14 +274,14 @@ const Habits = () => {
       </div>
       <div className="relative pt-4">
         <div className="text-center">
-          {`${getActiveDate().toLocaleString("en-us", { weekday: "long" })} ${activeDay} ${getMonthName(month)}, ${year}`}
+          {`${getActiveDate().toLocaleString('en-us', { weekday: 'long' })} ${activeDay} ${getMonthName(month)}, ${year}`}
         </div>
-        <div className="absolute pt-6 pr-32 top-0 right-0 font-light italic">
+        <div className="absolute right-0 top-0 pr-32 pt-6 font-light italic">
           Press ? to see controls
         </div>
       </div>
 
-      <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3">
         {habits
           .filter((habit) => habit.active)
           .map((habit, index) => (

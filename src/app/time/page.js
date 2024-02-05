@@ -1,9 +1,9 @@
-"use client"
-import { useEffect, useState } from "react"
-import axios from "axios"
-import LoggedTimeTable from "./LoggedTimeTable"
-import LogSessionModal from "./LogSessionModal"
-import ConfigModal from "./ConfigModal"
+'use client'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import LoggedTimeTable from './LoggedTimeTable'
+import LogSessionModal from './LogSessionModal'
+import ConfigModal from './ConfigModal'
 
 const Timer = () => {
   const [timerConfig, setTimerConfig] = useState({
@@ -40,64 +40,64 @@ const Timer = () => {
     const handleKeyDown = (event) => {
       if (!isSessionActive) {
         switch (event.key) {
-          case "r":
+          case 'r':
             setTimeRemaining(totalTimerSeconds())
             break
-          case "ArrowUp":
-            handleUpdateTimerConfig("minutes", 1)
+          case 'ArrowUp':
+            handleUpdateTimerConfig('minutes', 1)
             break
-          case "ArrowDown":
-            handleUpdateTimerConfig("minutes", -1)
+          case 'ArrowDown':
+            handleUpdateTimerConfig('minutes', -1)
             break
-          case "ArrowRight":
-            handleUpdateTimerConfig("seconds", 1)
+          case 'ArrowRight':
+            handleUpdateTimerConfig('seconds', 1)
             break
-          case "ArrowLeft":
-            handleUpdateTimerConfig("seconds", -1)
+          case 'ArrowLeft':
+            handleUpdateTimerConfig('seconds', -1)
             break
-          case "1":
+          case '1':
             setTimerConfig({ minutes: 5, seconds: 0 })
             break
-          case "2":
+          case '2':
             setTimerConfig({ minutes: 10, seconds: 0 })
             break
-          case "3":
+          case '3':
             setTimerConfig({ minutes: 25, seconds: 0 })
             break
-          case "4":
+          case '4':
             setTimerConfig({ minutes: 30, seconds: 0 })
             break
-          case "5":
+          case '5':
             setTimerConfig({ minutes: 60, seconds: 0 })
             break
         }
       }
 
-      if (event.key === "b") {
+      if (event.key === 'b') {
         event.preventDefault()
         setIsWorkMode(!isWorkMode)
       }
-      if (event.key === "c") {
+      if (event.key === 'c') {
         event.preventDefault()
         setIsConfigMode(!isConfigMode)
       }
-      if (event.key === "l") {
+      if (event.key === 'l') {
         event.preventDefault()
         setIsDisplayLogsMode(!isDisplayLogsMode)
       }
-      if (event.key === "Space") {
+      if (event.key === 'Space') {
         event.preventDefault()
         setIsSessionActive(!isSessionActive)
       }
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         if (isLogSessionMode || isConfigMode) {
           event.preventDefault()
           handleModalClose()
         }
       }
     }
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [
     isSessionActive,
     isLogSessionMode,
@@ -120,7 +120,7 @@ const Timer = () => {
   }
 
   const handleTimerEnd = async () => {
-    const res = await axios.post("/api/time/notify")
+    const res = await axios.post('/api/time/notify')
     setIsSessionActive(false)
     if (isWorkMode && timeRemaining !== totalTimerSeconds()) {
       setIsLogSessionMode(true)
@@ -145,18 +145,18 @@ const Timer = () => {
 
   return (
     <div>
-      <div className="pt-36 text-center w-full max-w-2xl mx-auto">
+      <div className="mx-auto w-full max-w-2xl pt-36 text-center">
         {!isWorkMode && <p className="text-2xl">BREAK MODE</p>}
-        <div className="text-8xl">{`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}</div>
-        <div className="flex justify-center gap-4 mt-4">
+        <div className="text-8xl">{`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}</div>
+        <div className="mt-4 flex justify-center gap-4">
           <button
-            className="bg-emerald-500 hover:opacity-50 font-bold py-2 px-4 rounded"
+            className="rounded bg-emerald-500 px-4 py-2 font-bold hover:opacity-50"
             onClick={() => setIsSessionActive(!isSessionActive)}
           >
-            {isSessionActive ? "Pause" : "Start"} Timer
+            {isSessionActive ? 'Pause' : 'Start'} Timer
           </button>
           <button
-            className="bg-rose-500 hover:opacity-50 font-bold py-2 px-4 rounded"
+            className="rounded bg-rose-500 px-4 py-2 font-bold hover:opacity-50"
             onClick={handleTimerEnd}
           >
             End Session
@@ -174,7 +174,7 @@ const Timer = () => {
           />
         </div>
         {isDisplayLogsMode && (
-          <div className="mt-4 text-left w-full">
+          <div className="mt-4 w-full text-left">
             <LoggedTimeTable />
           </div>
         )}

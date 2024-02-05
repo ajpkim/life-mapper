@@ -1,5 +1,5 @@
-const { openDb } = require("./utils/db")
-const { formatDate } = require("../utils")
+const { openDb } = require('./utils/db')
+const { formatDate } = require('../utils')
 
 export async function createTimeLog({ projectId, seconds, date }) {
   const db = await openDb()

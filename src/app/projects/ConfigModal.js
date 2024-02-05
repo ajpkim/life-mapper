@@ -1,6 +1,6 @@
-import axios from "axios"
-import classnames from "classnames"
-import { useEffect, useMemo, useState, useRef } from "react"
+import axios from 'axios'
+import classnames from 'classnames'
+import { useEffect, useMemo, useState, useRef } from 'react'
 
 const ConfigModal = ({
   isOpen,
@@ -30,14 +30,14 @@ const ConfigModal = ({
 
   return (
     <div
-      className="fixed bg-zinc-700 inset-0 bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-700 bg-opacity-50"
       onClick={handleOutsideClick}
     >
       <div
-        className="bg-zinc-950 py-6 px-20 rounded-lg shadow-xl"
+        className="rounded-lg bg-zinc-950 px-20 py-6 shadow-xl"
         ref={modalRef}
       >
-        <h3 className="text-xl font-bold mb-4">Project Configuration</h3>
+        <h3 className="mb-4 text-xl font-bold">Project Configuration</h3>
         <div>
           <table className="min-w-full">
             <thead>
@@ -56,17 +56,17 @@ const ConfigModal = ({
 
                   <td className="border border-gray-600 px-4 py-2">
                     <button
-                      className={`px-4 py-2 rounded hover:opacity-70 ${project.active ? "bg-emerald-500" : "bg-rose-500"} text-white`}
+                      className={`rounded px-4 py-2 hover:opacity-70 ${project.active ? 'bg-emerald-500' : 'bg-rose-500'} text-white`}
                       onClick={() =>
                         updateProject({ ...project, active: !project.active })
                       }
                     >
-                      {project.active ? "Active" : "Inactive"}
+                      {project.active ? 'Active' : 'Inactive'}
                     </button>
                   </td>
                   <td className="border border-gray-600 px-4 py-2">
                     <button
-                      className="px-4 py-2 rounded hover:opacity-70"
+                      className="rounded px-4 py-2 hover:opacity-70"
                       onClick={() => deleteProject(project)}
                     >
                       X

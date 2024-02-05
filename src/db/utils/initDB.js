@@ -1,4 +1,4 @@
-const { openDb } = require("./db")
+const { openDb } = require('./db')
 
 const createHabitsTable = `
 CREATE TABLE IF NOT EXISTS habits (
@@ -46,10 +46,10 @@ function createTable(db, sql, tableName) {
 
 async function initDBSchema() {
   const db = await openDb()
-  createTable(db, createHabitsTable, "Habit")
-  createTable(db, createHabitStatsTable, "Habit Stats")
-  createTable(db, createProjectsTable, "Projects")
-  createTable(db, createTimeLog, "Time Logs")
+  createTable(db, createHabitsTable, 'Habit')
+  createTable(db, createHabitStatsTable, 'Habit Stats')
+  createTable(db, createProjectsTable, 'Projects')
+  createTable(db, createTimeLog, 'Time Logs')
   await db.close()
 }
 

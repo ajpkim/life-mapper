@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef } from 'react'
 
 const ControlsModal = ({ isOpen, onClose }) => {
   const modalRef = useRef(null)
@@ -9,16 +9,16 @@ const ControlsModal = ({ isOpen, onClose }) => {
     }
   }
 
-  const tableDataClassNames = "border border-gray-600 px-4 py-2"
+  const tableDataClassNames = 'border border-gray-600 px-4 py-2'
 
   if (!isOpen) return null
 
   return (
     <div
-      className="fixed bg-zinc-700 inset-0 bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-700 bg-opacity-50"
       onClick={handleOutsideClick}
     >
-      <div className="bg-zinc-950 p-6 rounded-lg shadow-xl" ref={modalRef}>
+      <div className="rounded-lg bg-zinc-950 p-6 shadow-xl" ref={modalRef}>
         <table className="min-w-full">
           <thead>
             <tr>

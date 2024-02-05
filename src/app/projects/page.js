@@ -1,8 +1,8 @@
-"use client"
-import axios from "axios"
-import { useEffect, useState } from "react"
-import NewProjectModal from "./NewProjectModal"
-import ConfigModal from "./ConfigModal"
+'use client'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import NewProjectModal from './NewProjectModal'
+import ConfigModal from './ConfigModal'
 
 const Projects = () => {
   const [projects, setProjects] = useState(null)
@@ -12,7 +12,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const { data } = await axios.get("/api/projects/")
+        const { data } = await axios.get('/api/projects/')
         console.log(data)
         setProjects(data)
       } catch (error) {
@@ -24,28 +24,28 @@ const Projects = () => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "n") {
+      if (event.key === 'n') {
         if (!isAddProjectMode && !isConfigMode) {
           event.preventDefault()
           setIsAddProjectMode(true)
         }
       }
-      if (event.key === "c") {
+      if (event.key === 'c') {
         if (!isAddProjectMode) {
           event.preventDefault()
           setIsConfigMode(!isConfigMode)
         }
       }
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         if (isAddProjectMode || isConfigMode) {
           event.preventDefault()
           handleModalClose()
         }
       }
     }
-    document.addEventListener("keydown", handleKeyDown)
+    document.addEventListener('keydown', handleKeyDown)
     return () => {
-      document.removeEventListener("keydown", handleKeyDown)
+      document.removeEventListener('keydown', handleKeyDown)
     }
   }, [isAddProjectMode, isConfigMode])
 
@@ -56,7 +56,7 @@ const Projects = () => {
 
   const handleNewProjectSubmit = async (name) => {
     try {
-      const { data: project } = await axios.post("/api/projects", { name })
+      const { data: project } = await axios.post('/api/projects', { name })
       setProjects((prevProjects) => [...prevProjects, project])
     } catch (error) {
       console.error(error)
@@ -88,7 +88,7 @@ const Projects = () => {
 
   if (!projects) return <h1>Loading</h1>
   return (
-    <div className="flex flex-1 pt-4 pl-64">
+    <div className="flex flex-1 pl-64 pt-4">
       <div>
         <NewProjectModal
           isOpen={isAddProjectMode}
@@ -104,7 +104,7 @@ const Projects = () => {
         />
       </div>
       <div className="max-w-xl">
-        <h1 className="text-3xl pb-4">PROJECTS</h1>
+        <h1 className="pb-4 text-3xl">PROJECTS</h1>
         {projects
           .filter((project) => project.active)
           .map((project, index) => (

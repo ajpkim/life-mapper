@@ -1,8 +1,8 @@
-"use client"
-import { useEffect, useRef } from "react"
-import axios from "axios"
-import classNames from "classnames"
-import { formatDate, getDaysInMonth } from "@/utils"
+'use client'
+import { useEffect, useRef } from 'react'
+import axios from 'axios'
+import classNames from 'classnames'
+import { formatDate, getDaysInMonth } from '@/utils'
 
 const Habit = ({
   name,
@@ -48,13 +48,13 @@ const Habit = ({
     const isFocused = isActive && day === activeDay
 
     return classNames(
-      "w-6 h-6 rounded-sm flex justify-center items-center text-xs",
-      isDone && "text-emerald-500",
-      !isDone && !isFuture && !isBeforeHabitCreated && "text-rose-500",
-      isBeforeHabitCreated && !isDone && "text-gray-400",
-      isFuture && "text-gray-400 blur-sm",
-      isFuture && isFocused && "text-gray-400 blur-none",
-      isFocused && "border-2 border-blue-400 outline-none",
+      'w-6 h-6 rounded-sm flex justify-center items-center text-xs',
+      isDone && 'text-emerald-500',
+      !isDone && !isFuture && !isBeforeHabitCreated && 'text-rose-500',
+      isBeforeHabitCreated && !isDone && 'text-gray-400',
+      isFuture && 'text-gray-400 blur-sm',
+      isFuture && isFocused && 'text-gray-400 blur-none',
+      isFocused && 'border-2 border-blue-400 outline-none',
     )
   }
 
@@ -73,12 +73,12 @@ const Habit = ({
         onUpdateStats(name, payload.stat, date)
       }
     } catch (error) {
-      console.error("Error toggling habit status:", error)
+      console.error('Error toggling habit status:', error)
     }
   }
 
   const handleKeyDown = (event, day) => {
-    if (event.key === "Enter" || event.key === " ") {
+    if (event.key === 'Enter' || event.key === ' ') {
       toggleStat(day)
     }
   }
@@ -86,12 +86,12 @@ const Habit = ({
   return (
     <div className="flex flex-col items-center">
       <div
-        className={classNames("p-2 flex flex-col items-center border-2", {
-          "border-blue-400": isActive,
-          "border-transparent": !isActive,
+        className={classNames('flex flex-col items-center border-2 p-2', {
+          'border-blue-400': isActive,
+          'border-transparent': !isActive,
         })}
       >
-        <h1 className={classNames({ "text-white font-bold": isActive })}>
+        <h1 className={classNames({ 'font-bold text-white': isActive })}>
           {name}
         </h1>
         <div className="grid grid-cols-7 gap-1">

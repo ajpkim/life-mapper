@@ -1,13 +1,13 @@
-import axios from "axios"
+import axios from 'axios'
 
 export async function downloadData() {
-  const { data } = await axios.get("/api/export")
+  const { data } = await axios.get('/api/export')
   const json = JSON.stringify(data, null, 2)
-  const blob = new Blob([json], { type: "application/json" })
+  const blob = new Blob([json], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
-  const link = document.createElement("a")
+  const link = document.createElement('a')
   link.href = url
-  link.download = "life_map_data.json"
+  link.download = 'life_map_data.json'
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
@@ -15,7 +15,7 @@ export async function downloadData() {
 }
 
 export function formatDate(date) {
-  return date.toISOString().split("T")[0]
+  return date.toISOString().split('T')[0]
 }
 
 export function getDaysInMonth(month, year) {
@@ -25,7 +25,7 @@ export function getDaysInMonth(month, year) {
 export function getMonthName(monthIndex) {
   const date = new Date()
   date.setMonth(monthIndex)
-  return date.toLocaleString("en-US", { month: "long" })
+  return date.toLocaleString('en-US', { month: 'long' })
 }
 
 export function formatSeconds(seconds) {
@@ -45,7 +45,7 @@ export function secondsToHHMMSS(seconds) {
   const sec = remainder % 60
   const secStr = sec < 10 ? `0${sec}` : sec
 
-  let res = ""
+  let res = ''
   if (hours > 0) {
     res += `${hours}hr `
   }

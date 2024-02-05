@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef } from 'react'
 
 const NewHabitModal = ({ isOpen, onSubmit, onClose }) => {
-  const [name, setName] = useState("")
+  const [name, setName] = useState('')
   const inputRef = useRef(null)
   const modalRef = useRef(null)
 
@@ -9,11 +9,11 @@ const NewHabitModal = ({ isOpen, onSubmit, onClose }) => {
     if (isOpen) {
       inputRef.current?.focus()
     }
-    setName("")
+    setName('')
   }, [isOpen])
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault()
       handleSubmit()
     }
@@ -21,7 +21,7 @@ const NewHabitModal = ({ isOpen, onSubmit, onClose }) => {
 
   const handleSubmit = () => {
     onSubmit(name)
-    setName("")
+    setName('')
   }
 
   const handleOutsideClick = (event) => {
@@ -34,21 +34,21 @@ const NewHabitModal = ({ isOpen, onSubmit, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-zinc-700 bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-700 bg-opacity-50"
       onClick={handleOutsideClick}
     >
-      <div className="bg-zinc-950 p-6 rounded-lg shadow-xl" ref={modalRef}>
+      <div className="rounded-lg bg-zinc-950 p-6 shadow-xl" ref={modalRef}>
         <input
           ref={inputRef}
           type="text"
-          className="p-2 rounded w-full bg-white text-black"
+          className="w-full rounded bg-white p-2 text-black"
           value={name}
           onChange={(e) => setName(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         <button
           onClick={handleSubmit}
-          className="mt-4 bg-sky-500 text-white p-2 rounded hover:bg-sky-700"
+          className="mt-4 rounded bg-sky-500 p-2 text-white hover:bg-sky-700"
         >
           Add Habit
         </button>

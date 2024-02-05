@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { formatSeconds, secondsToHHMMSS } from "@/utils"
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { formatSeconds, secondsToHHMMSS } from '@/utils'
 
 const LoggedTimeTable = ({ startDate, endDate }) => {
   const [logs, setLogs] = useState(null)
@@ -11,7 +11,7 @@ const LoggedTimeTable = ({ startDate, endDate }) => {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const { data } = await axios.get("/api/time/today")
+        const { data } = await axios.get('/api/time/today')
         setLogs(data)
         const totalTime = Object.entries(data).reduce(
           (total, [projectName, projectData]) => {
@@ -31,7 +31,7 @@ const LoggedTimeTable = ({ startDate, endDate }) => {
 
   return (
     <div className="py-8 pl-48 text-xl">
-      <p className="font-bold py-4">
+      <p className="py-4 font-bold">
         Total Time ➔ {secondsToHHMMSS(totalTime)}
       </p>
       {Object.entries(logs).map(([projectName, projectData]) => (
@@ -42,7 +42,7 @@ const LoggedTimeTable = ({ startDate, endDate }) => {
           <ul className="list-inside">
             {projectData.logs.map((log) => (
               <li key={log.id} className="list-disc pl-4">
-                {secondsToHHMMSS(log.seconds)}{" "}
+                {secondsToHHMMSS(log.seconds)}{' '}
               </li>
             ))}
           </ul>

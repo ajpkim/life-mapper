@@ -1,4 +1,4 @@
-const { openDb } = require("./utils/db")
+const { openDb } = require('./utils/db')
 
 // export async function importJSON(filepath) {
 //   const db = await openDb()
@@ -20,7 +20,7 @@ const { openDb } = require("./utils/db")
 
 export async function getHabits() {
   const db = await openDb()
-  const habits = await db.all("SELECT * FROM habits")
+  const habits = await db.all('SELECT * FROM habits')
   await db.close()
   return habits
 }
@@ -28,7 +28,7 @@ export async function getHabits() {
 async function getNextDisplayNum() {
   const db = await openDb()
   const res = await db.get(
-    "SELECT MAX(display_num) as maxDisplayNum FROM habits",
+    'SELECT MAX(display_num) as maxDisplayNum FROM habits',
   )
   const nextDisplayNum = res.maxDisplayNum ? res.maxDisplayNum + 1 : 0
   await db.close()
@@ -39,11 +39,11 @@ export async function createHabit(name) {
   const db = await openDb()
   const nextDisplayNum = await getNextDisplayNum()
   const insertRes = await db.run(
-    "INSERT INTO habits (name, active, display_num) VALUES (?, ?, ?)",
+    'INSERT INTO habits (name, active, display_num) VALUES (?, ?, ?)',
     [name, true, nextDisplayNum],
   )
   const habitId = insertRes.lastID
-  const habitRes = await db.get("SELECT * FROM habits WHERE id = ?", [habitId])
+  const habitRes = await db.get('SELECT * FROM habits WHERE id = ?', [habitId])
   await db.close()
   return {
     ...habitRes,
@@ -53,7 +53,7 @@ export async function createHabit(name) {
 
 export async function deleteHabit(id) {
   const db = await openDb()
-  await db.run("DELETE FROM habits WHERE id = ?", [id])
+  await db.run('DELETE FROM habits WHERE id = ?', [id])
   await db.close()
 }
 
@@ -66,7 +66,7 @@ display_num
 `)
   for (let habit of habits) {
     const stats = await db.all(
-      "SELECT * FROM habit_stats WHERE habit_id = ?",
+      'SELECT * FROM habit_stats WHERE habit_id = ?',
       habit.id,
     )
     habit.stats = stats
@@ -84,7 +84,7 @@ export async function updateHabit({
 }) {
   const db = await openDb()
   const res = await db.run(
-    "UPDATE habits SET name = ?, active = ?, display_num = ?, created_at = ? WHERE id = ?",
+    'UPDATE habits SET name = ?, active = ?, display_num = ?, created_at = ? WHERE id = ?',
     [name, active, display_num, created_at, id],
   )
   await db.close()
@@ -93,27 +93,27 @@ export async function updateHabit({
 
 export async function createOrUpdateHabitStat(name, date, stat) {
   const db = await openDb()
-  const habit = await db.get("SELECT id FROM habits WHERE name = ?", name)
+  const habit = await db.get('SELECT id FROM habits WHERE name = ?', name)
 
   if (!habit) {
-    throw new Error("Habit not found:", name)
+    throw new Error('Habit not found:', name)
   }
 
   const currentStat = await db.get(
-    "SELECT id FROM habit_stats WHERE habit_id = ? AND date = ?",
+    'SELECT id FROM habit_stats WHERE habit_id = ? AND date = ?',
     habit.id,
     date,
   )
 
   if (currentStat) {
     await db.run(
-      "UPDATE habit_stats SET stat = ? WHERE id = ?",
+      'UPDATE habit_stats SET stat = ? WHERE id = ?',
       stat,
       currentStat.id,
     )
   } else {
     await db.run(
-      "INSERT INTO habit_stats (habit_id, date, stat) VALUES (?, ?, ?)",
+      'INSERT INTO habit_stats (habit_id, date, stat) VALUES (?, ?, ?)',
       habit.id,
       date,
       stat,
