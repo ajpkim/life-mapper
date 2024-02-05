@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import LoggedTimeTable from './LoggedTimeTable'
 import LogSessionModal from './LogSessionModal'
+import ManualLogModal from './ManualLogModal'
 import ConfigModal from './ConfigModal'
 
 const Timer = () => {
@@ -17,6 +18,7 @@ const Timer = () => {
   const [isSessionActive, setIsSessionActive] = useState(false)
   const [isConfigMode, setIsConfigMode] = useState(false)
   const [isLogSessionMode, setIsLogSessionMode] = useState(false)
+  const [isManualLogMode, setIsManualLogMode] = useState(false)
 
   useEffect(() => {
     const newTimerLength = totalTimerSeconds()
@@ -38,7 +40,7 @@ const Timer = () => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (!isSessionActive) {
+      if (!isSessionActive && !isManualLogMode && !isLogSessionMode) {
         switch (event.key) {
           case 'r':
             setTimeRemaining(totalTimerSeconds())
@@ -77,6 +79,10 @@ const Timer = () => {
         event.preventDefault()
         setIsWorkMode(!isWorkMode)
       }
+      if (event.key === 'm') {
+        event.preventDefault()
+        setIsManualLogMode(true)
+      }
       if (event.key === 'c') {
         event.preventDefault()
         setIsConfigMode(!isConfigMode)
@@ -90,7 +96,7 @@ const Timer = () => {
         setIsSessionActive(!isSessionActive)
       }
       if (event.key === 'Escape') {
-        if (isLogSessionMode || isConfigMode) {
+        if (isLogSessionMode || isConfigMode || isManualLogMode) {
           event.preventDefault()
           handleModalClose()
         }
@@ -105,11 +111,13 @@ const Timer = () => {
     isWorkMode,
     timerConfig,
     isDisplayLogsMode,
+    isManualLogMode,
   ])
 
   const handleModalClose = () => {
     setIsLogSessionMode(false)
     setIsConfigMode(false)
+    setIsManualLogMode(false)
   }
 
   const handleUpdateTimerConfig = async (field, delta) => {
@@ -133,6 +141,8 @@ const Timer = () => {
 
   const handleCloseModal = () => {
     setIsLogSessionMode(false)
+    setIsManualLogMode(false)
+    setIsConfigMode(false)
     setTimeRemaining(totalTimerSeconds())
   }
 
@@ -166,6 +176,7 @@ const Timer = () => {
             onClose={handleCloseModal}
             sessionSeconds={getElapsedTime()}
           />
+          <ManualLogModal isOpen={isManualLogMode} onClose={handleCloseModal} />
           <ConfigModal
             isOpen={isConfigMode}
             onClose={handleCloseModal}

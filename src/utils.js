@@ -55,6 +55,9 @@ export function secondsToHHMMSS(seconds) {
   if (sec > 0) {
     res += `${sec}s`
   }
+  if (!res) {
+    res = '0s'
+  }
   return res
 
   // `${hourStr}:${minutesStr}:${secStr}`
