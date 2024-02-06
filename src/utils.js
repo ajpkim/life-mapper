@@ -18,6 +18,31 @@ export function formatDate(date) {
   return date.toISOString().split('T')[0]
 }
 
+export function formatDateToMD(dateString) {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+  const suffixes = ['th', 'st', 'nd', 'rd']
+  const date = new Date(dateString)
+  const day = date.getDate()
+  const monthIndex = date.getMonth()
+  // Determine the appropriate ordinal suffix
+  const relevantDigits = day < 30 ? day % 20 : day % 30
+  const suffix = relevantDigits <= 3 ? suffixes[relevantDigits] : suffixes[0]
+  return `${months[monthIndex]} ${day}${suffix}`
+}
+
 export function getDaysInMonth(month, year) {
   return new Date(year, month + 1, 0).getDate()
 }
@@ -58,8 +83,7 @@ export function secondsToHHMMSS(seconds) {
   if (!res) {
     res = '0s'
   }
-  return res
-
+  return res.trimRight()
   // `${hourStr}:${minutesStr}:${secStr}`
   // return `${hours}hr ${minutes}m ${sec}s`
 }

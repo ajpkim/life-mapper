@@ -8,7 +8,7 @@ export async function createTimeLog({ projectId, seconds, date }) {
   await db.close()
 }
 
-export async function getTimeLogsByProject(startDate, endDate) {
+export async function getTimeLogsByProject({ startDate, endDate }) {
   const db = await openDb()
   const selectSql = `SELECT
 time_logs.id,
@@ -22,16 +22,19 @@ WHERE time_logs.date BETWEEN ? AND ?
 ORDER BY projects.name, time_logs.date
 `
   const logs = await db.all(selectSql, [startDate, endDate])
+
+  console.log(startDate, endDate)
+
   // let allProjectTime = 0
   const res = logs.reduce((acc, log) => {
     if (!acc[log.project_name]) {
       acc[log.project_name] = {
         logs: [],
-        totalSeconds: [],
+        totalSeconds: 0,
       }
     }
     acc[log.project_name].logs.push(log)
-    acc[log.project_name].totalSeconds += log.seconds
+    acc[log.project_name].totalSeconds += Number(log.seconds)
     // allProjectTime += log.seconds
     return acc
   }, {})
@@ -42,6 +45,6 @@ ORDER BY projects.name, time_logs.date
 export async function getTodaysTimeLogs() {
   const today = new Date()
   const date = formatDate(today)
-  const data = getTimeLogsByProject(date, date)
+  const data = getTimeLogsByProject({ startDate: date, endDate: date })
   return data
 }

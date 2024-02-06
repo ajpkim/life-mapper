@@ -79,6 +79,7 @@ const Habit = ({
 
   const handleKeyDown = (event, day) => {
     if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
       toggleStat(day)
     }
   }

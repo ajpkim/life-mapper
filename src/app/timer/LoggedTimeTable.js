@@ -35,17 +35,10 @@ const LoggedTimeTable = ({ startDate, endDate }) => {
         Total Time ➔ {secondsToHHMMSS(totalTime)}
       </p>
       {Object.entries(logs).map(([projectName, projectData]) => (
-        <div className="p-4 text-lg" key={projectName}>
+        <div className="pt-2 text-lg" key={projectName}>
           <h3 className="">
-            {projectName} ({secondsToHHMMSS(projectData.totalSeconds)})
+            {projectName}: {secondsToHHMMSS(projectData.totalSeconds)}
           </h3>
-          <ul className="list-inside">
-            {projectData.logs.map((log) => (
-              <li key={log.id} className="list-disc pl-4">
-                {secondsToHHMMSS(log.seconds)}{' '}
-              </li>
-            ))}
-          </ul>
         </div>
       ))}
     </div>
