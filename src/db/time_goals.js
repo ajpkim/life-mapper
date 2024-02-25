@@ -1,5 +1,15 @@
 const { openDb } = require('./utils/db')
 
+export async function getTimeGoals({ start_date, end_date }) {
+  const db = await openDb()
+  const selectSql = `
+    SELECT * FROM time_goals
+    WHERE start_date >= ? AND end_date <= ?`
+  const timeGoals = await db.all(selectSql, [start_date, end_date])
+  await db.close()
+  return timeGoals
+}
+
 export async function createTimeGoal({
   project_id,
   start_date,
