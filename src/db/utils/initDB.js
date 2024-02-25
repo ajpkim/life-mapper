@@ -25,11 +25,21 @@ active BOOLEAN NOT NULL DEFAULT TRUE,
 name TEXT NOT NULL UNIQUE
 )`
 
-const createTimeLog = `
+const createTimeLogTable = `
 CREATE TABLE IF NOT EXISTS time_logs (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 seconds INTEGER NOT NULL,
 date DATE NOT NULL,
+project_id INTEGER NOT NULL,
+FOREIGN KEY (project_id) REFERENCES projects(id)
+)`
+
+const createTimeGoalsTable = `
+CREATE TABLE IF NOT EXISTS time_goals (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+start_date DATE NOT NULL,
+end_date DATE NOT NULL,
+seconds INTEGER NOT NULL,
 project_id INTEGER NOT NULL,
 FOREIGN KEY (project_id) REFERENCES projects(id)
 )`
@@ -49,7 +59,8 @@ async function initDBSchema() {
   createTable(db, createHabitsTable, 'Habit')
   createTable(db, createHabitStatsTable, 'Habit Stats')
   createTable(db, createProjectsTable, 'Projects')
-  createTable(db, createTimeLog, 'Time Logs')
+  createTable(db, createTimeLogTable, 'Time Logs')
+  createTable(db, createTimeGoalsTable, 'Time Goals')
   await db.close()
 }
 
