@@ -5,8 +5,12 @@ export async function GET(request, params) {
     const params = request.nextUrl.searchParams
     const startDate = params.get('startDate')
     const endDate = params.get('endDate')
-    const data = await getTimeLogsByProject({ startDate, endDate })
-    return new Response(JSON.stringify(data), {
+    const timeLogs = await getTimeLogsByProject({ startDate, endDate })
+
+    // Update the data format here...
+    // const timeGoals = await getTimeGoals({ startDate, endDate })
+
+    return new Response(JSON.stringify(timeLogs), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     })
