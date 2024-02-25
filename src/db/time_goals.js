@@ -24,7 +24,7 @@ export async function createTimeGoal({
     end_date,
     seconds,
   ])
-  const timeGoalId = es.lastID
+  const timeGoalId = res.lastID
   const timeGoalRes = await db.get('SELECT * FROM time_goals WHERE id = ?', [
     timeGoalId,
   ])

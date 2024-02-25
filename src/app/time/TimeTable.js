@@ -8,13 +8,23 @@ const TimeTable = ({ startDate, endDate }) => {
 
   useEffect(() => {
     const fetchTableData = async () => {
-      const { data } = await axios.get('/api/timeGoals/', {
+      const { data } = await axios.get('/api/timegoals/', {
         params: { startDate, endDate },
       })
       setTableData(data)
     }
     fetchTableData()
   }, [startDate, endDate])
+
+  // Testing the CREATE
+  useEffect(() => {
+    const foo = async () => {
+      const params = { startDate, endDate, projectId: 1, seconds: 100 }
+      const { data } = await axios.post('/api/timegoals/', params)
+      console.log('Back in client ddata:', data)
+    }
+    foo()
+  }, [])
 
   if (!tableData) return null
   return <div>{JSON.stringify(tableData)}</div>
