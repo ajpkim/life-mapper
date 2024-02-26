@@ -1,6 +1,16 @@
+import { createTimeGoal } from '@/db/time_goals'
 import { formatDate, secondsToHHMMSS, formatDateToMD } from '@/utils'
 
+// project_id,
+// start_date,
+// end_date,
+// seconds,
+
 const TimeTable = async ({ timeTableData, startDate, endDate }) => {
+  const addTimeGoal = async (formData) => {
+    console.log('FORMING')
+  }
+
   const rows = timeTableData.map(
     ({ project, timeGoalSeconds, timeLoggedSeconds }) => (
       <tr key={project.id} className="border-2">

@@ -1,3 +1,4 @@
+'use server'
 const { openDb } = require('./utils/db')
 
 export async function getTimeGoals({ start_date, end_date }) {

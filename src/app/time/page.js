@@ -1,5 +1,6 @@
 import { getTimeTableData } from '@/db/time'
 import TimeTable from './TimeTable'
+import { AddTimeGoalForm } from './AddTimeGoalForm'
 import { getCurrentWeekBoundaries, dateToYYYYMMDD } from '@/utils'
 
 const Time = async () => {
@@ -17,6 +18,7 @@ const Time = async () => {
         startDate={startDate}
         endDate={endDate}
       />
+      <AddTimeGoalForm />
     </div>
   )
 }
