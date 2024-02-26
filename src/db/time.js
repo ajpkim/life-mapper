@@ -68,12 +68,13 @@ export async function getTimeTableData({ start_date, end_date }) {
     GROUP BY project_id`,
     [start_date, end_date],
   )
+
   const combinedData = projects
     .map((project) => {
       const projectGoals = timeGoals.find(
-        (goal) => goal.projectId === project.id,
+        (goal) => goal.project_id === project.id,
       )
-      const projectLogs = timeLogs.find((log) => log.projectId === project.id)
+      const projectLogs = timeLogs.find((log) => log.project_id === project.id)
       return {
         project: project,
         timeGoalSeconds: projectGoals ? projectGoals.totalGoalSeconds : 0,
