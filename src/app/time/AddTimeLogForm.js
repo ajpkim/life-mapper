@@ -11,7 +11,11 @@ function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
-    <button type="submit" aria-disabled={pending}>
+    <button
+      className="rounded bg-emerald-500 p-2 hover:opacity-50"
+      type="submit"
+      aria-disabled={pending}
+    >
       Add
     </button>
   )
@@ -23,7 +27,7 @@ export function AddTimeLogForm({ projects }) {
   return (
     <div>
       <h2 className="font-bold">Log Time</h2>
-      <form action={formAction} className="space-y-4">
+      <form action={formAction} className="space-y-4 pt-2">
         <div className="flex items-center">
           <select
             id="project"

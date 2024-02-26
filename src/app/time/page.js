@@ -2,6 +2,7 @@ import { getTimeTableData } from '@/db/time'
 import { getProjects } from '@/db/projects'
 
 import TimeTable from './TimeTable'
+import ToggleFormVisibility from './ToggleFormVisibility'
 import { AddTimeGoalForm } from './AddTimeGoalForm'
 import { AddTimeLogForm } from './AddTimeLogForm'
 import { getCurrentWeekBoundaries, dateToYYYYMMDD } from '@/utils'
@@ -16,17 +17,23 @@ const Time = async () => {
 
   if (!startDate || !projects) return null
   return (
-    <div className="flex flex-col pl-20 pt-12">
+    <div className="flex pl-20 pt-12">
       <TimeTable
         timeTableData={timeTableData}
         startDate={startDate}
         endDate={endDate}
       />
-      <div className="mt-4 border-2">
-        <AddTimeGoalForm projects={projects} />
-      </div>
-      <div className="mt-4 border-2">
-        <AddTimeLogForm projects={projects} />
+      <div className="flex flex-col pl-12 pt-4">
+        <div className="mt-4">
+          <ToggleFormVisibility text={'Add Goal'}>
+            <AddTimeGoalForm projects={projects} />
+          </ToggleFormVisibility>
+        </div>
+        <div className="mt-4">
+          <ToggleFormVisibility text={'Add Log'}>
+            <AddTimeLogForm projects={projects} />
+          </ToggleFormVisibility>
+        </div>
       </div>
     </div>
   )
