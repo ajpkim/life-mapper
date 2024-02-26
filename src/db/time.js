@@ -48,3 +48,39 @@ export async function getTodaysTimeLogs() {
   const data = getTimeLogsByProject({ startDate: date, endDate: date })
   return data
 }
+
+export async function getTimeTableData({ start_date, end_date }) {
+  const db = await openDb()
+  const projects = await db.all('SELECT * FROM projects')
+  const timeGoals = await db.all(
+    `
+    SELECT project_id, SUM(seconds) AS totalGoalSeconds
+    FROM time_goals
+    WHERE start_date <= ? AND end_date >= ?
+    GROUP BY project_id`,
+    [end_date, start_date],
+  )
+  const timeLogs = await db.all(
+    `
+    SELECT project_id, SUM(seconds) AS totalTimeLoggedSeconds
+    FROM time_logs
+    WHERE date BETWEEN ? AND ?
+    GROUP BY project_id`,
+    [start_date, end_date],
+  )
+  const combinedData = projects
+    .map((project) => {
+      const projectGoals = timeGoals.find(
+        (goal) => goal.projectId === project.id,
+      )
+      const projectLogs = timeLogs.find((log) => log.projectId === project.id)
+      return {
+        project: project,
+        timeGoalSeconds: projectGoals ? projectGoals.totalGoalSeconds : 0,
+        timeLoggedSeconds: projectLogs ? projectLogs.totalTimeLoggedSeconds : 0,
+      }
+    })
+    .filter((item) => item.timeGoalSeconds > 0 || item.timeLoggedSeconds > 0)
+
+  return combinedData
+}

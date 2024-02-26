@@ -87,3 +87,20 @@ export function secondsToHHMMSS(seconds) {
   // `${hourStr}:${minutesStr}:${secStr}`
   // return `${hours}hr ${minutes}m ${sec}s`
 }
+
+// utils/weekBoundaries.js
+
+export function getCurrentWeekBoundaries() {
+  const currentDate = new Date()
+  // Adjust to make Monday the first day of the week
+  const firstDayOfWeek = currentDate.getDate() - (currentDate.getDay() || 7) + 1
+  const lastDayOfWeek = firstDayOfWeek + 6 // Sunday is the last day
+
+  const startDate = new Date(currentDate.setDate(firstDayOfWeek))
+  startDate.setHours(0, 0, 0, 0) // Set to start of the day
+
+  const endDate = new Date(currentDate.setDate(lastDayOfWeek))
+  endDate.setHours(23, 59, 59, 999) // Set to end of the day
+
+  return { startDate, endDate }
+}

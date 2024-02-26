@@ -11,7 +11,10 @@ export async function GET(request, params) {
     const params = request.nextUrl.searchParams
     const startDate = params.get('startDate')
     const endDate = params.get('endDate')
-    const timeGoals = await getTimeGoals({ startDate, endDate })
+    const timeGoals = await getTimeGoals({
+      start_date: startDate,
+      end_date: endDate,
+    })
     return Response.json({ timeGoals })
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {

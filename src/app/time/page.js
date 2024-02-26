@@ -1,16 +1,18 @@
-'use client'
-import { useEffect, useState } from 'react'
+import { getTimeTableData } from '@/db/time'
 import TimeTable from './TimeTable'
-import { formatDate } from '@/utils'
+import { getCurrentWeekBoundaries } from '@/utils'
 
-const Time = () => {
-  const [startDate, setStartDate] = useState('2024-02-19')
-  const [endDate, setEndDate] = useState('2024-02-25')
+const Time = async () => {
+  const { startDate, endDate } = getCurrentWeekBoundaries()
+  const timeTableData = await getTimeTableData({
+    start_date: startDate,
+    end_date: endDate,
+  })
 
+  if (!startDate) return null
   return (
-    <div>
-      <h1>Hi</h1>
-      <TimeTable startDate={startDate} endDate={endDate} />
+    <div className="pl-20 pt-12">
+      <TimeTable timeTableData={timeTableData} />
     </div>
   )
 }
