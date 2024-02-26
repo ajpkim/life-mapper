@@ -1,5 +1,10 @@
 import axios from 'axios'
 
+export function getTodaysDate() {
+  const date = new Date()
+  return date.toISOString().split('T')[0]
+}
+
 export async function downloadData() {
   const { data } = await axios.get('/api/export')
   const json = JSON.stringify(data, null, 2)
@@ -19,6 +24,9 @@ export function formatDate(date) {
 }
 
 export function dateToYYYYMMDD(date) {
+  if (typeof date === 'string') {
+    return date.substring(0, 10)
+  }
   return date.toISOString().split('T')[0]
 }
 
@@ -102,5 +110,8 @@ export function getCurrentWeekBoundaries() {
   const endDate = new Date(currentDate.setDate(lastDayOfWeek))
   endDate.setHours(23, 59, 59, 999) // Set to end of the day
 
-  return { startDate, endDate }
+  return {
+    startDate: dateToYYYYMMDD(startDate),
+    endDate: dateToYYYYMMDD(endDate),
+  }
 }

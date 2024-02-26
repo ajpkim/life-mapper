@@ -2,6 +2,7 @@
 
 import { useFormState, useFormStatus } from 'react-dom'
 import { createTimeLog } from '@/app/actions'
+import { getTodaysDate } from '@/utils'
 
 const initialState = {
   message: null,
@@ -43,6 +44,12 @@ export function AddTimeLogForm({ projects }) {
             ))}
           </select>
         </div>
+        <input
+          type="date"
+          defaultValue={getTodaysDate()}
+          name="date"
+          className="block w-full rounded border-gray-300 p-1 text-black"
+        />
         <div className="flex items-center">
           <label htmlFor="time_log_hours" className="mr-2">
             Hours:

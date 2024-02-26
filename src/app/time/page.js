@@ -11,8 +11,8 @@ const Time = async () => {
   const { startDate, endDate } = getCurrentWeekBoundaries()
   const projects = await getProjects()
   const timeTableData = await getTimeTableData({
-    start_date: dateToYYYYMMDD(startDate),
-    end_date: dateToYYYYMMDD(endDate),
+    start_date: startDate,
+    end_date: endDate,
   })
 
   if (!startDate || !projects) return null
@@ -26,12 +26,20 @@ const Time = async () => {
       <div className="flex flex-col pl-12 pt-4">
         <div className="mt-4">
           <ToggleFormVisibility text={'Add Goal'}>
-            <AddTimeGoalForm projects={projects} />
+            <AddTimeGoalForm
+              projects={projects}
+              startDate={startDate}
+              endDate={endDate}
+            />
           </ToggleFormVisibility>
         </div>
         <div className="mt-4">
           <ToggleFormVisibility text={'Add Log'}>
-            <AddTimeLogForm projects={projects} />
+            <AddTimeLogForm
+              projects={projects}
+              startDate={startDate}
+              endDate={endDate}
+            />
           </ToggleFormVisibility>
         </div>
       </div>

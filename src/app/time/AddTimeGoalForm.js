@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormState, useFormStatus } from 'react-dom'
-import { createTimeGoal } from '@/app/actions'
+import { upsertTimeGoal } from '@/app/actions'
 
 const initialState = {
   message: null,
@@ -21,14 +21,16 @@ function SubmitButton() {
   )
 }
 
-export function AddTimeGoalForm({ projects }) {
-  const [state, formAction] = useFormState(createTimeGoal, initialState)
+export function AddTimeGoalForm({ projects, startDate, endDate }) {
+  const [state, formAction] = useFormState(upsertTimeGoal, initialState)
 
   return (
     <div>
       <h2 className="font-bold">Add/Update Time Goal</h2>
       <form action={formAction} className="space-y-4 pt-2">
         <div className="flex items-center">
+          <input type="hidden" name="start_date" value={startDate} />
+          <input type="hidden" name="end_date" value={endDate} />
           <select
             id="project"
             name="project_id"
