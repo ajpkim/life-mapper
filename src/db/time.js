@@ -82,6 +82,7 @@ export async function getTimeTableData({ start_date, end_date }) {
       }
     })
     .filter((item) => item.timeGoalSeconds > 0 || item.timeLoggedSeconds > 0)
+    .sort((a, b) => b.timeGoalSeconds - a.timeGoalSeconds)
 
   return combinedData
 }

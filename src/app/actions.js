@@ -39,15 +39,11 @@ export async function upsertTimeGoal(prevState, formData) {
 }
 
 export async function createTimeLog(prevState, formData) {
-  console.log(formData)
-
   const project_id = formData.get('project_id')
   const time_log_hours = formData.get('time_log_hours')
   const time_log_minutes = formData.get('time_log_minutes')
   const date = formData.get('date')
   const seconds = time_log_hours * 3600 + time_log_minutes * 60
-
-  console.log(seconds)
 
   try {
     const db = await openDb()
