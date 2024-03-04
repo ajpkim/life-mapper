@@ -58,7 +58,7 @@ export async function getTimeTableData({ start_date, end_date }) {
     FROM time_goals
     WHERE start_date <= ? AND end_date >= ?
     GROUP BY project_id`,
-    [end_date, start_date],
+    [start_date, end_date],
   )
   const timeLogs = await db.all(
     `
